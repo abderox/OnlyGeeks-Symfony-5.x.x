@@ -34,7 +34,7 @@ class WelcomeController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_homepage")
+     * @Route("/eee", name="app_homepage")
      */
     public function homepage()
     {
@@ -100,7 +100,7 @@ class WelcomeController extends AbstractController
     }
 
     /**
-     * @Route("/questions/show",name="app_show")
+     * @Route("/",name="app_show")
      */
     public function showart(HeloRepository $repo)
     {
