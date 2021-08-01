@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h3><a href="{{ path('app_create') }}"> Go back </a></h3>
+    {% set len=helos|length %}
+    {%  if len > 0 %}
+
+        <h3> {{ pluralize(len,'pin','pins') }} </h3>
+        {% for helo in helos %}
+            <div>
+                <p>
+                    <a href="{{ path('app_show_pin', {'id': helo.id}) }}" >{{ helo.title }}</a>
+
+
+                </p>
+            </div>
+
+        {% endfor %}
+        {% else %}
+        <p> {{ len }} no pins yet !</p>
+    {% endif %}
+
+{% endblock body %}
