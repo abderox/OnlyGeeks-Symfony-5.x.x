@@ -1,24 +1,30 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h3><a href="{{ path('app_create') }}"> Home </a></h3>
-    <h3><a href="{{ path('app_show') }}"> Go back </a></h3>
 
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 
             <div>
                 <p>
-                    {{ helos.age }}
-
+                    Age : {{ helos.age }}
                 <div>
                     <p>
-                        {{ helos.title|upper }}
-                        <strong>  {{ random(5,20) }}</strong> liked your post
+                      Reference :   {{ helos.title|upper }}
+                     <br>
+                       <small> <strong>  You </strong> and <strong> {{ random(20,70)}}</strong> others liked your post</small>
                     </p>
                     
                 </div>
-                <a href="{{ path('app_edit',{id:helos.id}) }}">Edit</a>
+                <a href="{{ path('app_edit',{id:helos.id}) }}">Edit</a> |
+                <a onclick="event.preventDefault(); confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit()" href="{{ path('app_delete',{id:helos.id}) }}">Delete</a>
                 </p>
-
+                <form action="{{ path('app_delete', {'id':  helos.id }) }}" method="post" id="js-pin-delete-form" style="display: none;">
+                    <input type="hidden" name="_method" value="DELETE">
+                </form>
             </div>
 
 

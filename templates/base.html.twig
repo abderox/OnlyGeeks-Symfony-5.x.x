@@ -8,13 +8,23 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spartan&display=swap">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
         <link rel="stylesheet" href="/CSS/app.css">
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-light bg-light" style="height: 100px;">
     <a class="navbar-brand" href="#">
         <i style="color: #444; font-size: 2rem;" class="pb-1 fad fa-cauldron"></i>
-        <p class="pl-2 d-inline font-weight-bold" style="color: #444;">Cauldron Overflow</p>
+        <p class="pl-2 d-inline font-weight-bold" style="color: #444;">Pinterest</p>
+    </a>
+    <a class="navbar-brand" href="{{ path('app_show') }}">
+        <i style="color: #444; font-size: 2rem;" class="pb-1 fad fa-cauldron"></i>
+        <p class="pl-2 d-inline font-weight-bold" style="color: #444;">My pins</p>
+    </a>
+    <a class="navbar-brand" href="{{ path('app_create') }}">
+        <i style="color: #444; font-size: 2rem;" class="pb-1 fad fa-cauldron"></i>
+        <p class="pl-2 d-inline font-weight-bold" style="color: #444;">New Pin</p>
     </a>
     <button class="btn btn-dark">Sign up</button>
 </nav>

@@ -1,15 +1,20 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h3><a href="{{ path('app_create') }}"> Go back </a></h3>
-    {% set len=helos|length %}
+
+    {% set len=helos.getTotalItemCount %}
     {%  if len > 0 %}
 
         <h3> {{ pluralize(len,'pin','pins') }} </h3>
+        {% for message in app.flashes('info') %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% for helo in helos %}
             <div>
                 <p>
-                    <a href="{{ path('app_show_pin', {'id': helo.id}) }}" >{{ helo.title }}</a>
-
+                    <a href="{{ path('app_show_pin', {'id': helo.id}) }}" >{{ helo.title|u.truncate(10, '(...)', true) }}</a>
+                   <small>{{ helo.createdAt|ago }}</small>
 
                 </p>
             </div>
@@ -18,5 +23,8 @@
         {% else %}
         <p> {{ len }} no pins yet !</p>
     {% endif %}
+    <div class="pagination justify-content-center">
+        {{ knp_pagination_render(helos) }}
+    </div>
 
 {% endblock body %}

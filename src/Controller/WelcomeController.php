@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 use App\Entity\Helo;
+use App\Form\HeloType;
 use App\Repository\HeloRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +19,7 @@ class WelcomeController extends AbstractController
 {
 
     /**
-     * @Route("/questions/show/{nam[a-z]}",priority="0",name="app_question_show")
+     * @Route("/questions/show/{nam<[a-z_]+>}",name="app_question_show")
      */
     public function show($nam)
     {
@@ -78,12 +80,9 @@ class WelcomeController extends AbstractController
 
         }*/
         $helo = new Helo();
-         $form = $this->createFormBuilder($helo)
-             ->add('title',TextType::class ,['attr'=>['class'=>'form-control','autofocus'=>'true'],'data'=>'abdel'])
-             ->add('age', NumberType::class , ['attr'=>['class'=>'form-control','autofocus'=>'true'],'data'=>50 ,'help' => 'The ZIP/Postal code for your credit card\'s billing address.'])
-             ->add('submit',SubmitType::class,['label'=>'create'])
-             ->getForm()
-             ;
+         $form = $this->createForm(HeloType::class,$helo);
+
+
         $form->handleRequest($request); //remplace $request->request->all()
         if($form->isSubmitted() && $form->isValid())
         {
@@ -91,6 +90,7 @@ class WelcomeController extends AbstractController
             $data=$form->getData(); // $form->get('title')->getDta(); //$form['']->getDtat();
             $em->persist($helo);
             $em->flush();
+            $this->addFlash('success','Pin created successfully!');
             return $this->redirectToRoute('app_show_pin',['id'=>$helo->getId()]);
         }
 
@@ -100,12 +100,19 @@ class WelcomeController extends AbstractController
     }
 
     /**
-     * @Route("/",name="app_show")
+     * @Route("/questions/show",name="app_show")
      */
-    public function showart(HeloRepository $repo)
+    public function showart(HeloRepository $repo,PaginatorInterface $paginator,Request  $request)
     {
        // return $this->redirect('https://www.google.com/');
-        return $this->render('question/showart.html.twig', ['helos' => $repo->findBy([],['updatedAt'=>'DESC'])]);
+        $query=$repo->findBy([],['updatedAt'=>'DESC']);
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        return $this->render('question/showart.html.twig', ['helos' => $pagination ]);
 
     }
 
@@ -135,10 +142,10 @@ class WelcomeController extends AbstractController
      */
     public function error()
     {
-        return $this->render('error.html.twig');
+        return $this->render('error404.html.twig');
     }
     /**
-     * @Route("/questions/shows/{id<\d+>}/edit" , name="app_edit" , methods={"GET","POST"})
+     * @Route("/questions/shows/{id<\d+>}/edit" , name="app_edit" , methods={"POST","GET"})
      */
     public function edit(HeloRepository $helos ,$id ,Request $request ,EntityManagerInterface $em) : Response
     {
@@ -146,12 +153,13 @@ class WelcomeController extends AbstractController
         $helo = $helos->find($id);
 
 
-        $form = $this->createFormBuilder($helo)
-            ->add('title',TextType::class ,['attr'=>['class'=>'form-control','autofocus'=>'true']])
-            ->add('age', NumberType::class , ['attr'=>['class'=>'form-control','autofocus'=>'true'],'help' => 'You need help , email me .'])
-            ->add('submit',SubmitType::class,['label'=>'update'])
-            ->getForm()
-        ;
+//        $form = $this->createFormBuilder($helo)
+//            ->add('title',TextType::class ,['attr'=>['class'=>'form-control','autofocus'=>'true']])
+//            ->add('age', NumberType::class , ['attr'=>['class'=>'form-control','autofocus'=>'true'],'help' => 'You need help , email me .'])
+//            ->add('submit',SubmitType::class,['label'=>'update'])
+//            ->getForm()
+//        ;
+        $form = $this->createForm(HeloType::class,$helo );
         $form->handleRequest($request); //remplace $request->request->all()
         if($form->isSubmitted() && $form->isValid())
         {
@@ -159,10 +167,22 @@ class WelcomeController extends AbstractController
             $data=$form->getData(); // $form->get('title')->getDta(); //$form['']->getDtat();
             $em->persist($helo);
             $em->flush();
+            $this->addFlash('success','Pin updated successfully!');
+
             return $this->redirectToRoute('app_show_pin',['id'=>$helo->getId()]);
         }
 
         return $this->render('question/edit.html.twig', ['helo'=>$helo,'maform'=>$form->createView()]);
     }
+    /**
+     * @Route("/questions/shows/{id<\d+>}/delete" , name="app_delete" , methods={"DELETE","POST"})
+     */
+    public function delete(Helo $helo  ,Request $request ,EntityManagerInterface $em) : Response
+    {
+        $em->remove($helo);
+        $em->flush();
+        $this->addFlash('info','Pin deleted successfully!');
 
+        return $this->redirectToRoute('app_show');
+    }
 }

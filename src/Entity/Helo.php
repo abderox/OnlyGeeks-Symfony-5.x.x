@@ -5,6 +5,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use App\Repository\HeloRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\Timestampable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -23,13 +24,29 @@ class Helo
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
+     * @Assert\NotBlank(message="can't be blank")
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 50,
+     *      minMessage = "The title must be at least {{ limit }} characters long",
+     *      maxMessage = "The title cannot be longer than {{ limit }} characters"
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
+     * @Assert\Regex(
+     *     pattern     = "/^[0-9]+$/i",
+     *     htmlPattern = "[0-9]+"
+     * )
      */
     private $age;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $image;
 
 
 
@@ -58,6 +75,18 @@ class Helo
     public function setAge(?string $age): self
     {
         $this->age = $age;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

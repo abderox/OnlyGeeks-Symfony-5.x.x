@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 <h1>Hello folk</h1>
+    <h3><a href="{{ path('app_show') }}"> My pins </a></h3>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 <!--<form method="post" action="">
     <input type="hidden" name="_token" value="{{ csrf_token('toid') }}">
     <div>
@@ -16,9 +22,11 @@
     </div>
     <input type="submit" value="submit">
 </form>-->
-    {{ form(maform) }}
-   {#  {{ form_start(maform) }}
+{#    {{ form(maform) }}#}
+    {% form_theme maform 'bootstrap_4_horizontal_layout.html.twig' %}
+     {{ form_start(maform) }}
+
     {{ form_widget(maform) }}
     <input type="submit" value="create">
-    {{ form_end(maform) }} #}
+    {{ form_end(maform) }}
 {% endblock body %}

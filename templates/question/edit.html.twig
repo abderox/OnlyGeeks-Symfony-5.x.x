@@ -2,6 +2,11 @@
 {%  block title 'Edit Pin #' ~ helo.id %}
 {% block body %}
     <h1>Edit pin #{{ helo.id }}</h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
     <!--<form method="post" action="">
     <input type="hidden" name="_token" value=" csrf_token('toid') #}}">
     <div>
@@ -17,9 +22,9 @@
     </div>
     <input type="submit" value="submit">
 </form>-->
-    {{ form(maform) }}
-    {#  {{ form_start(maform) }}
+{#    {{ form(maform) }}#}
+      {{ form_start(maform) }}
     {{ form_widget(maform) }}
-    <input type="submit" value="create">
-    {{ form_end(maform) }} #}
+    <input type="submit" value="Edit">
+    {{ form_end(maform) }}
 {% endblock body %}
