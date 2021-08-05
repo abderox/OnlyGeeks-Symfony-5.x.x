@@ -14,7 +14,12 @@
             <div>
                 <p>
                     <a href="{{ path('app_show_pin', {'id': helo.id}) }}" >{{ helo.title|u.truncate(10, '(...)', true) }}</a>
-                   <small>{{ helo.createdAt|ago }}</small>
+
+                    {% if helo.createdAt != helo.updatedAt %}
+                      <small>  edited <b>{{ helo.updatedAt|ago }}</b></small>
+                        {% else %}
+                            <small> created {{ helo.createdAt|ago }}</small>
+                    {% endif %}
 
                 </p>
             </div>

@@ -17,9 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 class WelcomeController extends AbstractController
 {
+    /**
+     * @Route("/", name="app_homepage")
+     */
+    public function homepage()
+    {
+        return $this->render('question/homepage.html.twig');
+    }
 
     /**
-     * @Route("/questions/show/{nam<[a-z_]+>}",name="app_question_show")
+     * @Route("/questions/show/{nam<[^0-9]+>}",name="app_question_show")
      */
     public function show($nam)
     {
@@ -35,13 +42,6 @@ class WelcomeController extends AbstractController
 
     }
 
-    /**
-     * @Route("/eee", name="app_homepage")
-     */
-    public function homepage()
-    {
-        return $this->render('question/homepage.html.twig');
-    }
 
     /**
      * @Route("/comments/{id}/vote/{direction}")
