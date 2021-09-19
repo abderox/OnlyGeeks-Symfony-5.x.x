@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Register!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+
+{% endblock %}
+
+{% block body %}
+    <div class="background" >
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+    <div class="container-fluid br" >
+        <div class="row" >
+            <div class="col-md-12">
+
+                {{ form_start(registrationForm, {
+                    'attr': {'class': 'form-signin','novalidate':'novalidate'}
+                }) }}
+                <h1 class="h3 mb-3 font-weight-normal text-center dark-text-login">Register <img src="https://img.icons8.com/nolan/64/customer-insight.png"/></h1>
+                {{ form_row(registrationForm.name , {
+                    attr: { placeholder: 'Lastname' }
+                } ) }}
+                {{ form_row(registrationForm.prename, {
+                    attr: { placeholder: 'Firstname' }
+                }) }}
+                {{ form_row(registrationForm.oGusername, {
+                    attr: { placeholder: 'userN@ma7' }
+                }) }}
+                {{ form_row(registrationForm.email, {
+                    attr: { placeholder: 'Email' }
+                }) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    attr: { placeholder: 'Password' }
+                }) }}
+                {{ form_row(registrationForm.agreeTerms) }}
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit" style="background-color: #743089">
+                    Register
+                </button>
+                {{ form_end(registrationForm) }}
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

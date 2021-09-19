@@ -1,37 +1,318 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}OnlyGeeks{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="#">
+
     {% block stylesheets %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spartan&display=swap">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-        <link rel="stylesheet" href="/CSS/app.css">
-{#        <link rel="stylesheet" href="{{ asset('build/app.css') }}">#}
 
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/tags-input.css') }}">
+        <style>
+            html{
+                overflow-x: hidden;
+            }
+                 body {
+                margin:0;
+                padding:0;
+                height:100%;
+
+            }
+            .view_image
+            {
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left:0;
+                position: fixed;
+                cursor: zoom-out;
+                z-index: 10000 }
+            #zoom-image
+            {
+                cursor: zoom-in;
+            }
+            .no-fullscreen
+            {
+                cursor: Default;
+            }
+            .view_image_body
+            {
+                position: fixed;
+                background-color: #320250;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left:0;
+                opacity: 0.9;
+                z-index: 10000  }
+            .view_image_img
+            {
+                position: absolute;
+                margin: auto;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                max-height: 95%;
+                max-width: 95%;
+                border-radius: 5px;
+                cursor: zoom-out;
+
+                z-index:10000
+            }
+
+             .visitor{
+                 background: #743089;
+                 background: -webkit-radial-gradient(circle farthest-corner at bottom right, #743089 0%, #B240FF 50%, #68128C 98%);
+                 background: -moz-radial-gradient(circle farthest-corner at bottom right, #743089 0%, #B240FF 50%, #68128C 98%);
+                 background: radial-gradient(circle farthest-corner at bottom right, #743089 0%, #B240FF 50%, #68128C 98%);
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+             }
+             .banner{
+                 background: rgb(164,129,17);
+                 background: -moz-linear-gradient(95deg, rgba(164,129,17,1) 0%, rgba(210,196,14,1) 48%, rgba(215,190,105,1) 100%);
+                 background: -webkit-linear-gradient(95deg, rgba(164,129,17,1) 0%, rgba(210,196,14,1) 48%, rgba(215,190,105,1) 100%);
+                 background: linear-gradient(95deg, rgba(164,129,17,1) 0%, rgba(210,196,14,1) 48%, rgba(215,190,105,1) 100%);
+                 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#a48111",endColorstr="#d7be69",GradientType=1);
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+             }
+            .show-article-container-border-purple {
+                border-left: 5px solid rgba(179, 159, 189, 0.89);
+
+            }
+            .show-article-container-border-green {
+                border-top: 5px solid #af81bd;
+                border-radius: 3px;
+            }
+            .show-article-container-border-green-pro {
+                border-top: 2px solid #af81bd;
+                border-radius: 3px;
+            }
+            .show-article-container-border-single {
+                border-top: 1px dotted #c1c1c1;
+                border-radius: 1px;
+            }
+            .show-article-container-border-single-bt {
+                border-bottom: 2px solid rgba(193, 193, 193, 0.68);
+                border-radius: 1px;;
+            }
+            .show-article-container-border-show {
+                border-top: 5px solid #af81bd;
+                border-bottom: 2px solid #af81bd;
+                border-radius: 3px;
+            }
+            .dark-text{
+                color: #000000 !important;
+                font-weight: bold;
+                text-shadow: 5px 5px 13px rgba(195, 83, 216, 1);
+                background: rgb(47,47,45);
+                background: -moz-linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                background: -webkit-linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                background: linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2f2f2d",endColorstr="#16140f",GradientType=1);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .dark-text-login{
+                color: #000000 !important;
+                font-size: 35px;
+                font-weight: bold;
+                text-shadow: 5px 5px 13px rgba(195, 83, 216, 1);
+                background: rgb(5, 5, 5);
+                background: -moz-linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                background: -webkit-linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                background: linear-gradient(95deg, rgb(47, 47, 45) 0%, rgb(74, 9, 149) 37%, rgb(0, 0, 0) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2f2f2d",endColorstr="#16140f",GradientType=1);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .dark-text-profile{
+                color: #3a0247 !important;
+                font-weight: bold;
+                text-shadow: 5px 5px 13px rgba(195, 83, 216, 1);
+                background: rgb(47,47,45);
+                background: -moz-linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                background: -webkit-linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                background: linear-gradient(95deg, rgba(47,47,45,1) 0%, rgba(112,112,105,1) 37%, rgba(22,20,15,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2f2f2d",endColorstr="#16140f",GradientType=1);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .date{
+                color: #b3a9a9;
+            }
+            .font-size-details{
+                font-size: 16px;
+            }
+            .font-size-title{
+                font-size: 20px;
+                color: black !important;
+            }
+            .follow{
+                text-shadow: 5px 5px 13px rgba(195, 83, 216, 1);
+            }
+            .follow h5{
+                font-size: 25px;
+            }
+            .follow h6{
+                font-size: 20px;
+            }
+            #more{
+                display: none;
+            }
+            .about:hover{
+                cursor: pointer;
+            }
+            .about{
+                border-radius: 50%;
+                padding: 0;
+            }
+            #more-tags{
+                display: none;
+            }
+
+
+
+        </style>
     {% endblock %}
 </head>
+
 <body>
-<nav class="navbar navbar-light bg-light" style="height: 100px;">
-    <a class="navbar-brand" href="#">
-        <i style="color: #444; font-size: 2rem;" class="pb-1 fad fa-cauldron"></i>
-        <p class="pl-2 d-inline font-weight-bold" style="color: #444;">Pinterest</p>
-    </a>
-    <a class="navbar-brand" href="{{ path('app_show') }}">
-        <i style="color: #444; font-size: 2rem;" class="pb-1 fad fa-cauldron"></i>
-        <p class="pl-2 d-inline font-weight-bold" style="color: #444;">My pins</p>
-    </a>
-    <a class="navbar-brand" href="{{ path('app_create') }}">
-        <i style="color: #444; font-size: 2rem;" class="pb-1 fad fa-cauldron"></i>
-        <p class="pl-2 d-inline font-weight-bold" style="color: #444;">New Pin</p>
-    </a>
-    <button class="btn btn-dark">Sign up</button>
+{% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+    <div class="alert alert-warning" style="margin-bottom: 0;">
+        You are currently switched to this user.
+        <a href="{{ path('app_show', {'_switch_user': '_exit'}) }}">Exit Impersonation</a>
+    </div>
+{% endif %}
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-bg ">
+    <a style="margin-left: 75px;" class="navbar-brand space-brand" href="{{ path('app_show') }}"><img class="navbar-brand" src="{{ asset('images/logo.png') }}" height="70px"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a style="color: #fff;" class="nav-link" href="{{ path('app_show') }}"> News Feed</a>
+            </li>
+            <li class="nav-item">
+                <a style="color: #fff;" class="nav-link" href="#">Gallery</a>
+            </li>
+            <li class="nav-item">
+                <a style="color: #fff;" class="nav-link" href="#">Books</a>
+            </li>
+            <li class="nav-item">
+                <a style="color: #fff;" class="nav-link" href="#">Postures</a>
+            </li>
+        </ul>
+{#        <form class="form-inline my-2 my-lg-0">#}
+{#            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
+{#            <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>#}
+{#        </form>#}
+        <ul class="navbar-nav ml-auto " >
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav-item dropdown" style="margin-right: 110px !important;">
+                    <a class="nav-link dropdown-toggle" href="#" style="color: #743089" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {%  if app.user.profile.image is  defined %}
+                            <img class="nav-profile-img rounded-circle" src="{{ app.user.profile.image ? asset('uploads/pins/'~app.user.profile.image) : "https://img.icons8.com/color/80/000000/user-male-circle--v2.png"  }}">
+                            {% else %}
+                                <img class="nav-profile-img rounded-circle" src="https://img.icons8.com/color/200/000000/user-male-circle--v2.png">
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu mt-2 " aria-labelledby="navbarDropdownMenuLink" style="width: 200px">
+                        <a class="dropdown-item" href="{{ path('app_edit_profile') }}"><img src="https://img.icons8.com/nolan/36/contract-job.png"/> Profile</a>
+
+                            <a class="dropdown-item" href="{{ path('app_create')   }}"><img src="https://img.icons8.com/nolan/36/sign-up.png"/> Create</a>
+                        {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+                            <a class="dropdown-item" href="" id="imper" onclick="Myfunction()"><img src="https://img.icons8.com/nolan/36/theatre-mask.png"/> Impersonate</a>
+                        {% endif %}
+
+                        <a class="dropdown-item mb-1 " href="{{ path('app_logout') }}"><img src="https://img.icons8.com/nolan/36/logout-rounded-down.png"/> Logout</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a style="color: #fff;" class="nav-link" href="{{ path('app_login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a style="color: #fff;" class="nav-link" href="{{ path('app_register') }}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
 </nav>
+
+{% for message in app.flashes('success') %}
+    <div class="alert b alert-success mb-0 text-center">
+        <img src="https://img.icons8.com/ios/36/26e07f/v-live.png"/>  {{ message }}
+    </div>
+{% endfor %}
+{% for message in app.flashes('error') %}
+    <div class="alert b alert-danger mb-0 text-center">
+        <img src="https://img.icons8.com/color-glass/36/000000/edvard-munch.png"/>  {{ message }}
+    </div>
+{% endfor %}
+{% for message in app.flashes('info') %}
+    <div class="alert  b alert-info mb-0 text-center">
+        <img src="https://img.icons8.com/flat-round/36/000000/info.png"/> {{ message }}
+    </div>
+{% endfor %}
+<button onclick="topFunction()" id="myBtn" title="Go to top"><img src="https://img.icons8.com/color-glass/32/000000/chevron-up.png"/></button>
+
 {% block body %}{% endblock %}
-<footer class="mt-5 p-3 text-center">
-    Made with <i style="color: red;" class="fa fa-heart"></i> by the guys and gals at <a style="color: #444; text-decoration: underline;" href="https://symfonycasts.com">SymfonyCasts</a>
+
+<footer class="footer">
+    <div class="container text-center">
+        <span class=" footer-text">All rights are registered &copy; 2021 <a href="https://knpuniversity.com" class="text-footer-1"><img class="navbar-brand" src="{{ asset('images/logo.png') }}" height="60px"></a></span>
+
+    </div>
 </footer>
-{% block javascripts %}{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/dynamic.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/zoom.js') }}"></script>
+    <script src="{{ asset('js/tags-input.js') }}"></script>
+    <script>
+        $('.dropdown-toggle').dropdown();
+        $('.custom-file-input').on('change', function(event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+        });
+    </script>
+    <script>
+        const imp=document.getElementById('imper');
+        function Myfunction()
+        {
+            var a = prompt("Username/email of client", "og.jack");
+            if(a)
+            {
+                imp.href="?_switch_user="+a;
+            }
+
+        }
+    </script>
+    <script>
+        setTimeout(function() {
+            $('.b').fadeOut('slow');
+        }, 3000);
+    </script>
+{% endblock %}
 </body>
 </html>

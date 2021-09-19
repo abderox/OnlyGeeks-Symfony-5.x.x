@@ -1,52 +1,414 @@
 {% extends 'base.html.twig' %}
-{% block title %}Question: {{ question }}{% endblock %}
+{% block title %}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+
+
+        .list-group{
+            max-height:400px !important;
+            overflow: auto;
+
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 100000;
+        }
+
+        .cookiesContent {
+            top: 25% !important;
+            left: 42% !important;
+            position: relative;
+            width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            color: #000;
+            text-align: center;
+            border-radius: 20px;
+            padding: 30px 30px 70px;}
+        button .close {
+            width: 30px;
+            font-size: 20px;
+            color: #c0c5cb;
+            align-self: flex-end;
+            background-color: transparent;
+            border: none;
+            margin-bottom: 10px;
+        }
+        .overlay img {
+            width: 82px;
+            margin-bottom: 15px;
+        }
+        .content{
+            margin-bottom: 40px;
+            font-size: 24px;
+        }
+         .accept {
+            background-color: rgba(116, 48, 137, 0.9);
+            border: none;
+            border-radius: 5px;
+            width: 200px;
+            padding: 14px;
+            font-size: 16px;
+            color: white;
+            box-shadow: 0px 6px 18px -5px rgba(120, 32, 146, 0.75);
+        }
+         .accept:hover{
+             box-shadow: 0px 6px 18px -5px rgba(76, 24, 90, 0.97);
+         }
+         .overlay a:hover{
+             color: #ece9e9;
+         }
+
+        .popup {
+            margin: 70px auto;
+            top: 25%;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #333;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+        .popup .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            transition: all 200ms;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+        .popup .close:hover {
+            color: #743089;
+        }
+        .popup .content {
+            max-height: 30%;
+            overflow: auto;
+        }
+
+        @media screen and (max-width: 700px){
+            .box{
+                width: 70%;
+            }
+            .popup{
+                width: 70%;
+            }
+        }
+    </style>
+{% endblock %}
 {% block body %}
+    <div class=" overlay">
+        <div class="cookiesContent">
+            <button class="close">✖</button>
+            <img  class="img-popup" src="https://img.icons8.com/fluency/160/000000/pet-commands-follow.png"/>
+            <p class="content">We use cookies for improving user experience, analytics and marketing.</p>
+            <a href="#" class="text-decoration-none accept " id="follow">Follow Me !</a>
+        </div>
+    </div>
+    <div id="id_view_image_body"></div>
+    <div id="id_view_image"></div>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="my-4">Question</h2>
+                <h2 class="my-4 dark-text ">Article #{{ helo.id }}</h2>
                 <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
                     <div class="q-container-show p-4">
                         <div class="row">
                             <div class="col-2 text-center">
-                                <img src="/images/tisha.png" width="100" height="100">
+                            <a href="{{ path('app_show_profile',{id:helo.user.id}) }}" class="text-decoration-none"><img src="{{ helo.user.profile.image ? asset('uploads/pins/'~helo.user.profile.image) : "https://img.icons8.com/color/200/000000/user-male-circle--v2.png"}}" width="100" height="100"></a>
                             </div>
-                            <div class="col">
-                                <h1 class="q-title-show">{{ question }}</h1>
+                            <div class="col-9">
+                                <h1 class="q-title-show">{{ helo.title }}</h1>
                                 <div class="q-display p-3">
                                     <i class="fa fa-quote-left mr-3"></i>
-                                    <p class="d-inline">I've been turned into a cat, any thoughts on how to turn back? While I'm adorable, I don't really care for cat food.</p>
-                                    <p class="pt-4"><strong>--Tisha</strong></p>
+                                    <p class="d-inline">{{ helo.content | raw }}</p>
+                                    {% if helo.publishedAt != helo.updatedAt %}
+                                        <p class="mt-4 ml-0"><img src="https://img.icons8.com/nolan/20/time-machine.png"/> <small class="text-muted ">  edited <b>{{ helo.updatedAt|ago }}</b></small></p>
+                                    {% else %}
+                                        <p class="mt-4 ml-0"><img  src="https://img.icons8.com/nolan/25/time-machine.png"/><small class="text-muted ">{{ helo.publishedAt|ago }}</small></p>
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="col-10">
+                                            {% if app.user and app.user.name==helo.user.name %}
+                                                <p class="pt-0"><strong>--You</strong></p>
+                                            {% else %}
+                                                <p class="pt-0"><strong>--{{ helo.user.OGusername }} </strong></p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="  col-2 text-muted" style="font-size: small"> <img class="mb-1" src="https://img.icons8.com/fluency/20/000000/hashtag.png"/> {{ helo.age }}</div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-1 ">
+                                <div class="dropdown " >
+                                    <a href="#" class="border-0 dropdown-toggle text-decoration-none" style="color:#743089" data-toggle="dropdown"> <img style="border: none" class="mr-0 mt-0 " src=" https://img.icons8.com/glyph-neue/48/ffffff/three-fingers.png"/></a>
+                                    <ul class="dropdown-menu mt-3 ">
+                                        {% if helo.user==app.user or 'ROLE_ADM' in app.user.roles %}
+                                            <li><a href="{{ path('app_edit',{id:helo.id}) }}" class="nav-link text-secondary"  style="width: 4rem;">Edit</a></li>
+                                            <li><a class="nav-link text-secondary" style="width: 5rem;" onclick="event.preventDefault(); confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit(); " href="{{ path('app_delete',{id:helo.id}) }}">Delete</a>
+                                            </li>
+                                        {% else %}
+                                            <li><a href="#" class="nav-link text-secondary"  style="width: 4rem;">Report</a></li>
+                                        {%  endif %}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <form action="{{ path('app_delete', {'id':  helo.id }) }}" method="post" id="js-pin-delete-form" style="display: none;">
+                                <input type="hidden" name="_method" value="DELETE">
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-between my-4">
-            <h2 class="">Answers <span style="font-size:1.2rem;">({{ answers|length }})</span></h2>
-            <button class="btn btn-sm btn-secondary">Submit an Answer</button>
+        <div class=" p-2 text-center overflow-hidden rounded shadow mb-4 mt-4 ">
+        <div class="row">
+            {%  if helo.image|default %}
+            <div class="col-7">
+
+
+                <img style="width: 600px !important;"  class="rounded  pt-2 zoom-image "width="200px" id="zoom-image" src="{{helo.image ? asset('uploads/pins/'~helo.image) : asset('uploads/pins/6-610b325d7a28c117415814.jpg') }} " alt="pin picture">
+
+
+
+            </div>
+            {% endif %}
+            <div class="col">
+                <ul class="list-group small js-reference-list " style="" data-url="{{ path('app_list_refernces',{id:helo.id}) }}">
+                    {% for reference in helo.reference %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center mb-1" >
+                            <input type="text" value="{{reference.originalFilename}}" class="form-control js-edit-filename" style="width: auto;" >
+                            <span>
+                             <a href="{{ path('download_file',{id:reference.id}) }}" class="btn btn-link btn-sm download">
+                                 <img src="https://img.icons8.com/nolan/25/downloading-updates.png"/>
+                             </a>
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <ul class="list-unstyled">
-            {% for answer in answers %}
-                <li class="mb-4">
+        </div>
+
+        <div class="d-flex justify-content-between my-4 mb-4">
+            {%  if is_granted('ROLE_ADMIN') %}
+            <h2 class=""><img src="https://img.icons8.com/color/48/000000/comments--v2.png"/> Comments <span style="font-size:2rem;" id="count">({{ helo.postComments|length }}) </span>     <img class="mb-1" src="https://img.icons8.com/color/25/000000/trash--v2.png"/><span style="color: #B0413E;font-size:1.2rem;" id="countDeleted"> {{ helo.getdeletedPostComments|length }}  </span></h2>
+                {% else %}
+                    <h2 class=""><img src="https://img.icons8.com/color/48/000000/comments--v2.png"/> Comments <span style="font-size:1.2rem;" id="countNone">({{ helo.getNoNdeletedPostComments|length }})</span></h2>
+            {% endif %}
+
+        </div>
+        <ul class="list-unstyled show-article-container-border-show mt-3 rounded " id="appaned"  style="overflow-y: auto ; height: 400px">
+            <form method="post" id="form">
+                <div class="input-group mb-5 mt-4 mr-1">
+{#                    <input type="text"#}
+{#                           id="comment"#}
+{#                           name="comment"#}
+{#                           class="form-control"#}
+{#                           value=""#}
+{#                           placeholder="Add comment"#}
+{#                    >#}
+                    <textarea rows="4" id="comment"
+                              name="comment"
+                              class="form-control"
+                              placeholder="Add comment" ></textarea>
+                    <div class="input-group-append">
+                        <button type="submit"
+                                id="btn"
+                                class="btn btn-outline-secondary" style="border: none">
+                            <img src="https://img.icons8.com/fluency/48/000000/reply-all-arrow.png"/>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {%  if is_granted('ROLE_ADMIN')  %}
+            {% set comments = helo.postComments%}
+            {%  else %}
+                {% set comments = helo.getNoNdeletedPostComments %}
+            {% endif %}
+            {% for comment in comments %}
+                <li class="mb-4 show-article-container-border-single">
                     <div class="d-flex justify-content-center">
                         <div class="mr-2 pt-2">
-                            <img src="/images/tisha.png" width="50" height="50">
+                            <a href="{{ path('app_show_profile',{id:comment.user.id}) }}" class="text-decoration-none"><img src="https://img.icons8.com/nolan/50/nerd.png" width="50" height="50"></a>
                         </div>
-                        <div class="mr-3 pt-2">
-                            {{ answer }}
-                            <p>-- Mallory</p>
+                        <div class="mr-3 pt-2 col-10">
+                            {%  if is_granted('ROLE_ADMIN') and comment.isDeleted==true %}
+                                <p  style="color: #B0413E">{{ comment.comment }}</p>
+                            {% else %}
+                            <p id="cm"> {{ comment.comment }}</p>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-6">
+                            {% if app.user and app.user.fullname==comment.user.fullname %}
+                                <p class="pt-2 mt-3"><strong>--You</strong></p>
+                            {% else %}
+                                <p class="pt-2 mt-3"><strong>--<a href="{{ path('app_show_profile',{id:comment.user.id}) }}" class="text-decoration-none" style="color: rgba(116,48,137,1)">{{ comment.user.fullname }}</a> </strong></p>
+                            {% endif %}
+                                </div>
+                                <div class="pt-2 mt-3">
+                                    <img src="https://img.icons8.com/nolan/20/time-machine.png"/> <small class="text-muted ">{{ comment.updatedAt|ago }}</small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="vote-arrows flex-fill pt-2" style="min-width: 90px;">
-                            <a class="vote-up" href="#"><i class="far fa-arrow-alt-circle-up"></i></a>
-                            <a class="vote-down" href="#"><i class="far fa-arrow-alt-circle-down"></i></a>
-                            <span>+ 6</span>
-                        </div>
+
+                        <div class="">
+
+                            <div class="dropdown " style=" top: 0.5rem; float: right">
+                                <a href="#" class="border-0 dropdown-toggle text-decoration-none" style="color:#efefee" data-toggle="dropdown"> <img  class="mr-0 mt-0 " src="https://img.icons8.com/plumpy/25/000000/info-squared.png"/></a>
+                                <ul class="dropdown-menu mt-3 ">
+
+                                    <input type="hidden" id="href" value="{{ path('app_delete_comment',{id:helo.id,cm:comment.id}) }}">
+                                    {% if comment.user==app.user or 'ROLE_ADM' in app.user.roles %}
+                                        <li><a href="{{ path('app_edit',{id:helo.id}) }}" class="nav-link text-secondary"  style="width: 4rem;">Edit</a></li>
+                                        <li><a class="nav-link text-secondary" style="width: 5rem;" id="delete_comment" href="">Delete</a>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="#" class="nav-link text-secondary"  style="width: 4rem;">Report</a></li>
+                                    {%  endif %}
+                                </ul>
+                            </div>
+                            <div class="vote-arrows flex-fill pt-2 mt-3" style="min-width: 90px;">
+                                <a class="vote-up" href="#"><i class="far fa-arrow-alt-circle-up"></i></a>
+                                <a class="vote-down" href="#"><i class="far fa-arrow-alt-circle-down"></i></a>
+                                  <div> <span>+ 6</span></div>
+                            </div>
+
+                    </div>
                     </div>
                 </li>
             {% endfor %}
+
         </ul>
     </div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            {% if helo.user.AmIfollowing(app.user)==false and app.user.id!=helo.user.id %}
+            $('.download').addClass('file_download');
+            {% endif %}
+            $('#btn').click(function (event) {
+                event.preventDefault();
+                var comment = $('#comment').val();
+                if(comment.length>1) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ path('app_pin_comment',{id:helo.id}) }}",
+                        data: {comment: comment},
+                        dataType: "json",
+                        success: function (result) {
+                            console.log(result)
+                            $('#comment').val("");
+                            var add = '<li class="mb-4 show-article-container-border-single"> <div class="d-flex justify-content-center"> <div class="mr-2 pt-2"> <a href="" class="text-decoration-none"><img src="https://img.icons8.com/nolan/50/nerd.png" width="50" height="50"></a> </div> <div class="mr-3 pt-2 col-10"><p id="cm">' + result.comments + '</p><div class="row"> <div class="col-6"><p class="pt-2 mt-3"><strong>--<a href="{{ path('app_show_profile',{id:app.user.id}) }}" class="text-decoration-none" style="color: rgba(116,48,137,1)">You</a> </strong></p></div> <div class="pt-2 mt-3"> <img src="https://img.icons8.com/nolan/20/time-machine.png"/><small class="text-muted ">' + moment(result.createdAt.date).fromNow() + '</small> </div> </div> </div> <div class="vote-arrows flex-fill pt-2 " style="min-width: 90px;"> <a class="vote-up" href="#"><i class="far fa-arrow-alt-circle-up"></i></a> <a class="vote-down" href="#"><i class="far fa-arrow-alt-circle-down"></i></a> <span>+ 6</span> </div> </div> </li>'
+                            // var li ='<li class="mb-4 show-article-container-border-single"> <div class="d-flex justify-content-center"> <div class="mr-2 pt-2"> <a href="" class="text-decoration-none"><img src="https://img.icons8.com/nolan/50/nerd.png" width="50" height="50"></a> </div> <div class="mr-3 pt-2 col-10">  <p id="cm">'+result.comments+'</p> <div class="row"> <div class="col-6"> <p class="pt-2 mt-3"><strong>--You</strong></p></div> <div class="pt-2 mt-3"> <img src="https://img.icons8.com/nolan/20/time-machine.png"/> <small class="text-muted ">'+result.createdAt.date+'</small> </div> </div> </div> <div class="vote-arrows flex-fill pt-2 " style="min-width: 90px;"> <a class="vote-up" href="#"><i class="far fa-arrow-alt-circle-up"></i></a> <a class="vote-down" href="#"><i class="far fa-arrow-alt-circle-down"></i></a> <span>+ 6</span> </div> </div> </li>'
+                            // $('#appaned').append(add);
+                            $(add).insertAfter('#form');
+                            $('#count').html(result.count_comments);
+                            $('#countNone').html(result.countNonedeletedcomments);
+                            $('#countDeleted').html(result.countDeletedcomments);
+                        }
+                    });
+                }
+            });
+            $('#delete_comment').click(function (event) {
+                event.preventDefault();
+                var url = $('#href').val();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result)
+
+                    }
+                });
+            });
+
+
+            $('.file_download').click(function (event) {
+                event.preventDefault();
+                var url = $('.file_download').prop('href');
+
+                $.ajax({
+
+                    url: url,
+                    data: {},
+                    dataType: "json",
+                    success: function (result) {
+                       if(result.code===401)
+                       {
+                           $('.overlay').css({"visibility": "visible", "opacity": "1"});
+                           $('.overlay').find('.content').html('Kindly <strong>Follow me !</strong> for free download !<br><br><small style="color: #686868">"A simple step to encourage us to share more  resources for free"</small>');
+                       }
+                       else {
+                           return
+                       }
+
+
+
+                    }
+                });
+            });
+            $('.close').click(function (event) {
+                event.preventDefault();
+
+                $('.overlay').css({"visibility": "hidden", "opacity": "0"});
+
+
+            });
+            $('#follow').click(function(event){
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('app_profile_follow',{id:helo.user.id}) }}",
+                    data: {  },
+                    dataType: "json",
+                    success: function(result){
+                        $('#follow').css({"background-color": "#3e24d9"});
+                        $('#follow').text("Following");
+                        $('.overlay').find('.content').html(' <strong>Thank you ! </strong><img src="https://img.icons8.com/cute-clipart/48/000000/happy.png"/> ');
+                        $('.img-popup').attr('src',"https://img.icons8.com/fluency/200/000000/pet-commands-train.png");
+                        $('.download').removeClass('file_download');
+                        setTimeout(()=>{$('.overlay').css({"visibility": "hidden", "opacity": "0"});download();},3000);
+
+
+                    }
+                })
+            });
+            function download(){
+                window.location.href= $('.download').prop('href');
+                setTimeout(refresh,2000);
+            }
+            function refresh(){
+
+                location.reload();
+            }
+
+        });
+    </script>
+
 {% endblock %}

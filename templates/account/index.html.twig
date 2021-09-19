@@ -1,0 +1,316 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.user.OGusername ? user.user.OGusername : "OG.user"}} | profile{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/account.css') }}">
+    <style>
+        .fa-lock , .fa-globe{
+            color: #0c0350;
+            font-size: 23px;
+        }
+        .sm{
+            font-size: 14px;
+            color: #c6c6c6;
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+    {%  set pv=user.user.profile.privateInfo %}
+    {% set array = {} %}
+    {%  if pv == 0 %}
+         {% set array = {fn: user.user.fullname, em:user.user.email} %}
+    {% elseif pv == 1 %}
+        {% set array = { fn: "", em: "" } %}
+    {% endif %}
+    {% if app.user==user.user %}
+        <div class="alert alert-info mb-0 text-center" style="font-size: 18px;">
+            <img src="https://img.icons8.com/flat-round/36/000000/info.png"/>
+            This is just a preview of what people see !<a href="{{ path('app_edit_profile') }} " class="text-decoration-none"> My profile</a>
+        </div>
+    {%  endif %}
+    <div id="id_view_image_body"></div>
+    <div id="id_view_image"></div>
+    <div class="container mb-5">
+        <div class="row user-menu-container square">
+            <div class="col-md-12 user-details ">
+                <div class="row spacepurplebg white show-article-container-border-green wrapper">
+                    <div class="background"></div>
+                    <div class="col-md-2 no-pad" >
+                        <div class="user-image">
+                            <img class="img-responsive thumbnail rounded-circle text-center" src="{{ user.user.profile.image ? asset('uploads/pins/'~user.user.profile.image) : "https://img.icons8.com/color/200/000000/user-male-circle--v2.png"}}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-10 no-pad" >
+                        <div class="user-pad" >
+                            <h3 style="margin-bottom: 10px !important;">Welcome <img src="https://img.icons8.com/color/48/ffffff/house-lannister.png"/> <strong class="visitor">{{ app.user.fullName }}</strong> to my humble profile !</h3>
+                            {% if app.user %}
+                                <div class="mt-5 mb-3 row" >
+                                    <div class="col-6">
+                                    <h4 class="white" style="font-size: 18px"><img src="https://img.icons8.com/nolan/36/customer-insight.png"/>
+                                         {{ user.user.OGusername }} <span class="date">(username)</span></h4>
+                                        {% if pv== 0 %}
+                                            <h4 class="white font-size-details"><img src="https://img.icons8.com/nolan/40/touch-id.png"/>{{ array.fn }}</h4>
+                                             <h4 class="white font-size-details"><img src="https://img.icons8.com/nolan/34/new-post.png"/> {{ "   "~array.em }}</h4>
+                                        {%  elseif pv==1 %}
+                                        {% endif %}
+
+                                    <h5 class=" date font-size-details"><img src="https://img.icons8.com/nolan/36/time-machine.png"/> Joined ({{ user.user.createdAt|date("M/Y") }})</h5>
+                                    </div>
+                                    <div class="col-3 text-center">
+                                        <a class=" btn-info text-decoration-none follow" href="#" style="margin-bottom: 10px" >
+                                            <h5>{{ user.user.friends | length }}</h5>
+                                            <h6>{{ pluralize_a(user.user.friends|length  ,'Influencer') }}</h6>
+                                        </a>
+                                    </div>
+                                    <div class="col-3 text-center">
+                                        <a class=" btn-info text-decoration-none follow "  href="#" style=" margin-bottom: 10px" >
+                                            <h5 id="fans">{{ user.user.myfriends | length }}</h5>
+                                            <h6>{{ pluralize_a(user.user.friends|length  ,'Fan') }}</h6>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row mt-3 pt-4">
+                                <div class="col-4">
+
+                                        {% if user.user.AmIfollowing(app.user) %}
+                                             <a class="btn btn-labeled btn-info " id="follow" href="" style="background-color: #a79be3 ;color: black; margin-bottom: 10px" >
+                                            <span class="btn-label"><img src="https://img.icons8.com/ios/36/ffffff/pet-commands-follow.png"/></span>
+                                            <span id="follow_text">Following</span>
+                                            </a>
+                                        {% else %}
+                                            <a class="btn btn-labeled btn-info " id="follow" href="" style="background-color: #743089 ; margin-bottom: 10px" >
+                                            <span class="btn-label"><img src="https://img.icons8.com/ios/36/ffffff/pet-commands-follow.png"/></span>
+                                            <span id="follow_text">Follow</span>
+                                            </a>
+                                         {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row overview show-article-container-border-single-bt">
+                    <div class="col-md-12 dark-text text-center user-pad ">
+                        <h1 style="font-size: 35px">CAPITAL</h1>
+                    </div>
+                </div>
+                <div class="row overview" >
+                    <div class="col-md-4 user-pad text-center" >
+                        <h3><img src="https://img.icons8.com/nolan/52/hot-article.png"/></h3>
+                        <h4>{{ user.user.helos | length }}</h4>
+                    </div>
+                    <div class="col-md-4 user-pad text-center">
+                        <h3><img src="https://img.icons8.com/nolan/52/speech-bubble-with-dots.png"/></h3>
+                        <h4>{{ user.comment }}</h4>
+                    </div>
+                    <div class="col-md-4 user-pad text-center">
+                        <h3><img src="https://img.icons8.com/nolan/52/facebook-like.png"/></h3>
+                        <h4>{{ user.like }}</h4>
+                    </div>
+                </div>
+                <div class="row  pt-2 pb-3 show-article-container-border-green text-center" style="font-size: 24px" >
+                    <div class="col-4">
+                        <a href="{{ path('app_my_posts') }}" class="badge badge-pill badge-secondary">My posts</a>
+                    </div>
+                    <div class="col-4">
+                        <a href="" class="badge badge-pill badge-secondary">My gallery</a>
+                    </div>
+                    <div class="col">
+                        <a href="{{ path('app_edit_profile') }}" class="badge badge-pill badge-secondary">My profile</a>
+                    </div>
+                </div>
+                <div class="row  pt-2 show-article-container-border-single" >
+                    <div class="col-md-12 text-center user-pad " >
+                        <h1 style="font-size: 25px">About</h1>
+                    </div>
+                    <div class="q-container-about pb-3 pt-3 col-md-12">
+                        <div class="row">
+                            <div class="col">
+                                <div class="q-display p-3 mb-2">
+                                    <i class="fa fa-quote-left mr-3"></i>
+                                    <p class="d-inline text">{{ user.user.profile.about ? user.user.profile.about : "No words yet ..." }}</p>
+                                </div>
+                                {% if pv==0 %}
+                                <div class="text-center m-2 font-size-title" title="more info" ><img class="shadow about" id="about" src="https://img.icons8.com/color/36/000000/circled-chevron-down--v3.png"/></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" id="more">
+                            <div class="col">
+                                <div class="rounded q-display p-3 ">
+                                    <h4 class="font-size-title">Gender</h4>
+                                    {% if user.user.gender==0 %}
+                                        <img src="https://img.icons8.com/nolan/30/male.png"/> <span> Male</span>
+                                    {% elseif user.user.gender==1 %}
+                                        <img src="https://img.icons8.com/nolan/30/female.png"/> <span> Female</span>
+                                    {% else %}
+                                        <img src="https://img.icons8.com/color/30/000000/bisexual-flag.png"/> <span> Other</span>
+                                    {% endif %}
+                                    <hr>
+                                    <h4 class="font-size-title mt-2">Relationship</h4>
+                                    {% if user.user.profile.relationship=="in a Relationship" %}
+                                        <img src="https://img.icons8.com/nolan/36/date.png"/> <span> In a Relationship</span>
+                                    {% elseif user.user.profile.relationship=="Single" %}
+                                        <img src="https://img.icons8.com/color/30/000000/one-to-one.png"/> <span> Single</span>
+                                    {% elseif user.user.profile.relationship=="Married" %}
+                                        <img src="https://img.icons8.com/nolan/30/diamond-ring.png"/> <span> Married</span>
+                                    {% else %}
+                                        <img src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/30/000000/external-broken-heart-valentines-day-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"/> <span> Other</span>
+
+                                    {% endif %}
+                                </div>
+                                <div class="text-center m-2 font-size-title" title="more info" ><img class="shadow about" id="about2" src="https://img.icons8.com/color/36/000000/circled-chevron-up--v3.png"/></div>
+
+                            </div>
+
+                        </div>
+                        {%  endif %}
+                    </div>
+
+                        {% for helo in helos %}
+                            {%  if helo.ispublished  %}
+                                {% set array={pr:'private',fa:'lock'} %}
+                            {% else %}
+                                {% set array={pr:'public', fa:'globe'} %}
+                            {%  endif %}
+                            {%  if helo.ispublished == 0 or (helo.ispublished==1 and app.user==helo.user) %}
+                    <div class="q-container-posts pb-4 pt-2 col-md-12 show-article-container-border-single">
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                                    <div class="q-container-show p-4">
+                                        <div class="row">
+                                            <div class="col-2 text-center">
+                                                <a href="#" class="text-decoration-none"><img src="{{ user.user.profile.image ? asset('uploads/pins/'~user.user.profile.image) : "https://img.icons8.com/color/200/000000/user-male-circle--v2.png"}}" width="100" height="100"></a>
+                                            </div>
+                                            <div class="col-9">
+                                                <h1 class="q-title-show">{{ helo.title }} <i class="fa fa-{{ array.fa }}"></i><span class=" sm"> ({{ array.pr }})</span></h1>
+                                                <div class="q-display p-3">
+                                                    <i class="fa fa-quote-left mr-3"></i>
+                                                    <p class="d-inline">{{ helo.content | raw }}</p>
+                                                    {% if helo.createdAt != helo.updatedAt %}
+                                                        <p class="mt-4 ml-0"><img src="https://img.icons8.com/nolan/20/time-machine.png"/> <small class="text-muted ">  edited <b>{{ helo.updatedAt|ago }}</b></small></p>
+                                                    {% else %}
+                                                        <p class="mt-4 ml-0"><img  src="https://img.icons8.com/nolan/25/time-machine.png"/><small class="text-muted ">{{ helo.createdAt|ago }}</small></p>
+                                                    {% endif %}
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            {% if app.user and app.user.name==helo.user.name %}
+                                                                <p class="pt-0"><strong>--You</strong></p>
+                                                            {% else %}
+                                                                <p class="pt-0"><strong>--{{ helo.user.OGusername }} </strong></p>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="  col-2 text-muted" style="font-size: small"> <img class="mb-1" src="https://img.icons8.com/fluency/20/000000/hashtag.png"/> {{ helo.age }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-1 ">
+                                                <div class="dropdown " >
+                                                    <a href="#" class="border-0 dropdown-toggle text-decoration-none" style="color:#743089" data-toggle="dropdown"> <img style="border: none" class="mr-0 mt-0 " src=" https://img.icons8.com/glyph-neue/48/ffffff/three-fingers.png"/></a>
+                                                    <ul class="dropdown-menu mt-3 ">
+                                                        {% if helo.user==app.user or 'ROLE_ADM' in app.user.roles %}
+                                                            <li><a href="{{ path('app_edit',{id:helo.id}) }}" class="nav-link text-secondary"  style="width: 4rem;">Edit</a></li>
+                                                            <li><a class="nav-link text-secondary" style="width: 5rem;" onclick="event.preventDefault(); confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit(); " href="{{ path('app_delete',{id:helo.id}) }}">Delete</a>
+                                                            </li>
+                                                        {% else %}
+                                                            <li><a href="#" class="nav-link text-secondary"  style="width: 4rem;">Report</a></li>
+                                                        {%  endif %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                {%  if helo.image|default %}
+                                    <div class="text-center p-2 overflow-hidden rounded shadow mb-4 mt-4 ">
+                                        <img style="max-width: 500px; max-height: 600px;"  class="rounded w-100 zoom-image" width="200px" id="zoom-image" src="{{helo.image ? asset('uploads/pins/'~helo.image) : asset('uploads/pins/6-610b325d7a28c117415814.jpg') }} " alt="pin picture">
+                                    </div>
+                                {% endif %}
+                                <form action="{{ path('app_delete', {'id':  helo.id }) }}" method="post" id="js-pin-delete-form" style="display: none;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                </form>
+                            </div>
+                        </div>
+                            <a class="answer-link text-decoration-none" href="{{path('app_show_pin',{id:helo.id}) }}/#appaned" style="color: #fff;">
+                                <p class="q-display-response text-center p-3">
+                                    <img src="https://img.icons8.com/color/36/000000/comments--v2.png"/> {{ helo.getNoNdeletedPostComments|length }} comments
+                                </p>
+                            </a>
+                    </div>
+                            {%  endif %}
+                        {%  endfor %}
+
+
+                </div>
+                <div class="pagination justify-content-center text-center">
+                    {{ knp_pagination_render(helos) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#follow').click(function(event){
+                event.preventDefault();
+                var fans=$('#fans').text();
+                var fans_to_int=parseInt(fans);
+                console.log(parseInt(fans));
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('app_profile_follow',{id:user.user.id}) }}",
+                    data: {  },
+                    dataType: "json",
+                    success: function(result){
+                        console.log(result)
+                       if(result.friendship)
+                       {
+                           $('#fans').html(fans_to_int+1);
+                           $('#follow_text').html('Following');
+                           $('#follow').css("background-color", "#a79be3");
+                           $('#follow').css("color", "black");
+                       }
+                       else
+                       {
+                           $('#fans').html(fans_to_int-1);
+                           $('#follow_text').html('Follow');
+                           $('#follow').css("background-color", "#743089FF");
+                       }
+
+                    }
+                });
+            });
+            $("#about").click(function(){
+                $('#about').hide(500);
+                $('#about2').show(500);
+                $("#more").slideDown("slow");
+            });
+            $("#about2").click(function(){
+                $('#about2').hide(500);
+                $('#about').show(500);
+                $("#more").slideUp("slow");
+            });
+        });
+    </script>
+{% endblock %}

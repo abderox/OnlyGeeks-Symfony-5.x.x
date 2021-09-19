@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+{% block body %}
+    {% for flashError in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+    {{ form_start(requestForm , {
+        'attr': {'class': 'form-signin'}
+    }) }}
+            <h1 class="h3 mb-3 font-weight-normal text-center">Reset your password <img src="https://img.icons8.com/ios/60/000000/customer-insight--v2.png"/></h1>
+        {{ form_row(requestForm.email) }}
+        <div class="mb-2">
+            <small>
+                Enter your email address and we we will send you a
+                link to reset your password.
+            </small>
+        </div>
+
+        <button class="btn btn-primary btn-block mt-2" style="background-color: #743089">Send password reset email</button>
+    {{ form_end(requestForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

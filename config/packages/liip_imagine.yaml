@@ -2,4 +2,30 @@
 liip_imagine:
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: "gd"
+    filter_sets:
+            my_thumb_filter:
+                filters:
+                    # use and setup the "thumbnail" filter
+                    thumbnail:
+                        # set the thumbnail size to "32x32" pixels
+                        size: [ 400, 400 ]
+                        # crop the input image, if required
+                        mode: outbound
+                        allow_upscale: true
+            my_profile_filter:
+                filters:
+                    # use and setup the "thumbnail" filter
+                    thumbnail:
+                        # set the thumbnail size to "32x32" pixels
+                        size: [ 36, 36 ]
+                        # crop the input image, if required
+                        mode: outbound
+            edit_thumb_filter:
+                filters:
+                    # use and setup the "thumbnail" filter
+                    thumbnail:
+                        # set the thumbnail size to "32x32" pixels
+                        size: [ 100, 100 ]
+                        # crop the input image, if required
+                        mode: outbound
 

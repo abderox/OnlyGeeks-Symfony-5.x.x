@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="background">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+    <div class="container-fluid br">
+<form method="post" class="form-signin">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal text-center dark-text-login"> Sign in <img src="https://img.icons8.com/nolan/64/customer-insight.png"/></h1>
+    <label for="inputEmail" >Username / Email</label>
+    <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3" autocomplete="email" required autofocus placeholder="og.jack">
+    <label for="inputPassword" class="mt-4">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+
+{#        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.#}
+{#        See https://symfony.com/doc/current/security/remember_me.html#}
+<div class="row ">
+        <div class="checkbox mb-3 col-6">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    <div class="col-6 mb-3 d-flex justify-content-end">
+        <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-none secondary-text ">Forgot password</a>
+    </div>
+</div>
+
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" style="background-color: #743089">
+        Sign in
+    </button>
+
+</form>
+    </div>
+{% endblock %}

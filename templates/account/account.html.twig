@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Account!{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <style>
+        .vich-image a{
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 q-container-avatar text-center mt-5 mb-5 p-4">
+            <div class="row text-center mt-2 p-4 ">
+                <div class="col-12">
+                    {%  if app.user.profile.image is  defined %}
+                <img style="width: 200px !important; height: 200px ;  border: 5px solid #6137bb; " class="rounded-circle" src="{{app.user.profile.image ? asset('uploads/pins/'~app.user.profile.image) : "https://img.icons8.com/color/200/000000/user-male-circle--v2.png"}}"/>
+                    {%  else  %}
+                        <img style="width: 200px !important; height: 200px ;  border: 5px solid #6137bb; " class="rounded-circle" src="https://img.icons8.com/color/200/000000/user-male-circle--v2.png"/>
+                    {% endif %}
+                </div>
+                </div>
+            <div class="row mt-2">
+                <div class="col-6 dark-text-profile">
+                    <h4>{{ app.user.friends|length }}</h4>
+                    <h5 style="font-weight: bold">{{ pluralize_a(app.user.friends|length  ,'Influencer') }}</h5>
+                </div>
+                <div class="col-6 dark-text-profile">
+                    <h4>{{ app.user.myfriends|length }}</h4>
+                    <h5 style="font-weight: bold">{{ pluralize_a(app.user.myfriends|length  ,'Fan') }}</h5>
+                </div>
+            </div>
+            <div class="row mt-5 pt-4 show-article-container-border-green-pro ">
+                <div class="col ">
+                   <a href="{{ path('app_show_profile',{id:app.user.id}) }}" class="btn btn-labeled btn-info">Public profile</a>
+                </div>
+            </div>
+
+            <div class="row mt-4 pt-4 show-article-container-border-green-pro ">
+                <div class="col-12 text-center ">
+                    <h5>Activity</h5>
+                    <p class="text-muted text-center"><small>Your interaction with OG users</small></p>
+                </div>
+            </div>
+            <div class="row mt-2 pt-4 show-article-container-border-green-pro ">
+                <div class="col-12 ">
+                    <h5>{{ app.user.helos|length }}</h5>
+                    <h6 style="font-weight: bold">{{ pluralize_a(app.user.helos|length ,'Post') }}</h6>
+                </div>
+            </div>
+            <div class="row mt-1 pt-1  ">
+
+                <div class="col-5 ">
+                    <h5>{{ app.user.likes|length }}</h5>
+                    <h6 style="font-weight: bold">{{ pluralize_a(app.user.likes|length ,'Like') }}</h6>
+                </div>
+                <div class="col-7">
+                    <h5>{{ app.user.postcomment|length }}</h5>
+                    <h6 style="font-weight: bold">{{ pluralize_a(app.user.postcomment|length ,'Comment') }}</h6>
+                </div>
+            </div>
+            <div class="row mt-5 pt-4 show-article-container-border-green ">
+                <div class="col-12">
+                    <a href="#" class="btn btn-labeled btn-info" >Update password</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-8 col-sm-12 col-xs-12">
+                    {{ form_start(maform, {
+                        'attr': {'class': 'form-signi'}
+                    }) }}
+                    <h1 class="h3 mb-3 font-weight-normal text-center">My profile
+                        {% if app.user.gender==0 %}
+                            <img src="https://img.icons8.com/color/80/000000/user-male-circle--v2.png"/>
+                        {% elseif app.user.gender==1 %}
+                            <img src="https://img.icons8.com/color/80/000000/user-female-circle--v2.png"/>
+                        {% else %}
+                            <img src="https://img.icons8.com/ios-filled/80/000000/drag-gender-neutral.png"/>
+                        {% endif %}
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+        <div class="col-md-8">
+
+
+            {{ form_row(maform.profile.imageFile,{attr:{'placeholder':'Select an image','class':'mb-2'}}) }}
+            {{ form_row(maform.oGusername , {
+                attr: { placeholder: 'Username' }
+            } ) }}
+            {{ form_row(maform.name , {
+            attr: { placeholder: 'Lastname' }
+            } ) }}
+            {{ form_row(maform.prename, {
+            attr: { placeholder: 'Firstname' }
+            }) }}
+            {{ form_row(maform.email, {
+            attr: { placeholder: 'Email' }
+            }) }}
+        </div>
+        <div class="col-md-4 ">
+
+
+                {{ form_row(maform.gender) }}
+
+                {{ form_row(maform.profile.relationship) }}
+
+                {{ form_row(maform.profile.privateInfo) }}
+
+                {{ form_row(maform.profile.about, {
+                    attr: { placeholder: 'write something about your self ' }
+                }) }}
+
+
+        </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-12 col-xs-12">
+                <button class="btn btn-lg btn-primary btn-block " type="submit" style="background-color: #743089">
+                    Update !
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(maform) }}
+</div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{% endblock  %}

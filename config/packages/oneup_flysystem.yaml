@@ -1,0 +1,11 @@
+# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle
+oneup_flysystem:
+    adapters:
+        upload_adapter:
+            awss3v3:
+                client: Aws\S3\S3Client
+                bucket: 'onlygeeks'
+    filesystems:
+        upload_filesystem:
+            adapter: upload_adapter
+            alias: League\Flysystem\Filesystem

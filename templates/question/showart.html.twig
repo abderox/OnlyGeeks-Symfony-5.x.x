@@ -1,31 +1,119 @@
 {% extends 'base.html.twig' %}
-{% block body %}
 
+{% block body %}
+<style>
+    i:hover{
+        transform: rotate(10deg);
+        transition: 0.15s;
+        color: #295a44;
+    }
+    .fa-thumbs-up{
+        color: #3D9970;
+    }
+    .fa-thumbs-down{
+        color: #B0413E;
+    }
+    button{
+        background: transparent;
+        border: none;
+        outline: none;
+    }
+</style>
     {% set len=helos.getTotalItemCount %}
     {%  if len > 0 %}
 
-        <h3> {{ pluralize(len,'pin','pins') }} </h3>
+        <h3 class="ml-5 text-center text-danger"> {{ pluralize(len,'pin') }} </h3>
+        <div class="error"></div>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% for message in app.flashes('info') %}
             <div class="alert alert-info">
                 {{ message }}
             </div>
         {% endfor %}
-        {% for helo in helos %}
-            <div>
-                <p>
-                    <a href="{{ path('app_show_pin', {'id': helo.id}) }}" >{{ helo.title|u.truncate(10, '(...)', true) }}</a>
+        {%  for row in helos|batch(3) %}
+            <div class=" row ml-2 justify-center">
+                {% for helo in row %}
 
-                    {% if helo.createdAt != helo.updatedAt %}
-                      <small>  edited <b>{{ helo.updatedAt|ago }}</b></small>
-                        {% else %}
-                            <small> created {{ helo.createdAt|ago }}</small>
-                    {% endif %}
+                    <div class="col-lg-4">
 
-                </p>
+
+                        <div class="p-2 overflow-hidden rounded shadow mb-4" width="50%">
+                           <h2> <a href="{{ path('app_show_pin', {'id': helo.id}) }}" class="text-decoration-none text-secondary pl-3 pt-3 text-center">{{ helo.title|u.truncate(10, '(...)', false) }}</a></h2>
+                            {% if helo.user.name ==null  %}
+                               <h5> By user.{{ helo.user.email|split('@')[0] }}</h5>
+                            {% else %}
+                                <h5> By {{ helo.user.name }}</h5>
+                                <input type="hidden" name="post-{{ helo.id}}" value="{{ helo.id }}">
+                            {% endif %}
+                            <img class="rounded w-100" width="100%" src="{{helo.image ? asset('uploads/pins/'~helo.image) : asset('uploads/pins/6-610b325d7a28c117415814.jpg') }} " alt="pin picture">
+                            {% if helo.createdAt != helo.updatedAt %}
+                                <small class="text-muted ">  edited <b>{{ helo.updatedAt|ago }}</b></small>
+                            {% else %}
+                                <small class="text-muted">created {{ helo.createdAt|ago }}</small>
+                            {% endif %}
+
+                            <div class="row ">
+
+
+
+                                      <div class="col-md-12 d-flex  justify-content-between">
+                                          <a href="{{ path('app_pin_like',{id:helo.id}) }}" class="text-decoration-none text-secondary js-like">
+                                        {% if app.user  and helo.isLikedBy(app.user) %}
+                                           <h6><i class="fas fa-thumbs-up fa-2x "></i> Liked</h6></a>
+                                            {% else %}
+                                               <h6><i class="far fa-thumbs-up fa-2x "></i> Like</h6>
+                                        {% endif %}
+                                          <span class="js-likes"><strong>{{ helo.likes|length }}</strong> liked this post</span>
+                                      </a>
+                                      </div>
+
+
+
+                              </div>
+                            <div class="row ">
+
+
+
+                                <div class="col-md-12 d-flex  justify-content-between">
+                                    <a href="{{ path('app_pin_comment',{id:helo.id}) }}" class="text-decoration-none text-secondary js-like js-comment">
+
+                                        <i class="fas fa-thumbs-up fa-2x "></i>
+
+
+                                        <input value="{{ helo.id }}" type="hidden" class="js-comment-val">
+
+                                    </a>
+                                    <input name="comment" value="" class="js-comments-{{ helo.id }}">
+
+
+                                </div>
+                                <div class="comments"></div>
+
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+                {% endfor %}
             </div>
-
         {% endfor %}
-        {% else %}
+    {% else %}
         <p> {{ len }} no pins yet !</p>
     {% endif %}
     <div class="pagination justify-content-center">
@@ -33,3 +121,78 @@
     </div>
 
 {% endblock body %}
+{%block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+    <script>
+        var data="";
+        function onClickBtnLike(event) {
+            event.preventDefault();
+
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-likes');
+            if(spanCount==null)
+            {
+                   location.reload();
+
+            }
+            console.log(spanCount);
+            const icone = this.querySelector('i');
+
+
+            axios.get(url).then(function (response) {
+                console.log(response.data.likes);
+                spanCount.innerHTML =  "<strong>"+response.data.likes+"</strong> liked this post"
+                if (icone.classList.contains('fas')) {
+                    icone.classList.replace('fas','far');
+                }
+                else {
+                    icone.classList.replace('far', 'fas');
+
+                }
+
+            }).catch((e)=>{
+                if(e.response.status === 500)
+                {
+                    const error=document.querySelector('.error');
+
+                    setTimeout( function(){
+                        error.innerHTML=' <div class="alert alert-danger"> please login first !</div>'
+                    },3000)
+
+                }
+            })
+
+            document.querySelector('.error').innerHTML=''
+        }
+        document.querySelectorAll('a.js-like').forEach(function (link){
+            link.addEventListener('click', onClickBtnLike)
+        })
+        function onClickComment(event) {
+            event.preventDefault();
+
+            const url = this.href;
+            const val= this.querySelector('input.js-comment-val').value;
+            const spanCount = document.querySelector('input.js-comments-'+val);
+
+            console.log(spanCount.value);
+
+            span=spanCount.value;
+
+            axios.post(url,span).then(function (response) {
+                console.table(response.data.comments);
+
+
+            })
+            axios.get(url).then(function (response){
+                data = response.data.comments;
+                data.forEach((e)=>{
+                    document.querySelector(".comments").innerHTML=+'<a>e</a>'
+                })
+            })
+
+        }
+        document.querySelectorAll('a.js-comment').forEach(function (link){
+            link.addEventListener('click', onClickComment)
+        })
+    </script>
+{% endblock %}

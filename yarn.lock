@@ -2903,6 +2903,11 @@
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
 
+"jQuery@^1.7.4":
+  "integrity" "sha1-8y3FyFpwRO6GS0RDue5F+UeLoTc="
+  "resolved" "https://registry.npmjs.org/jQuery/-/jQuery-1.7.4.tgz"
+  "version" "1.7.4"
+
 "js-tokens@^4.0.0":
   "integrity" "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
   "resolved" "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"

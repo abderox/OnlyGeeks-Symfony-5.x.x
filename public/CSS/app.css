@@ -4,11 +4,27 @@ body {
 }
 
 .jumbotron-img {
-    background: rgb(237,116,88);
-    background: linear-gradient(302deg, rgba(237,116,88,1) 16%, rgba(51,61,81,1) 97%);
+    background: rgb(14,0,36);
+    background: linear-gradient(90deg, rgba(14,0,36,1) 0%, rgba(116,48,137,1) 44%, rgba(117,48,137,1) 100%);
     color: #fff;
 }
-
+.lineOne {
+    transition-delay:2s;
+    transition:2s ease in;
+    animation: txtFlyIn 3s linear;}
+@keyframes txtFlyIn{
+    0% { opacity:0;}
+    100% { opacity:1;}
+}
+.lineTwo {
+    transition-delay:5s;
+    transition:2s ease in;
+    animation: txtFadeIn 3s linear;}
+@keyframes txtFadeIn{
+    0% { opacity:0;}
+    50% { opacity:0.5;}
+    100% { opacity:1;}
+}
 .q-container {
     border-top-right-radius: .25rem;
     border-top-left-radius: .25rem;
@@ -18,8 +34,52 @@ body {
 .q-container-show {
     border-top-right-radius: .25rem;
     border-top-left-radius: .25rem;
-    background-color: #ED7458 ;
+    background-color: #743089;
 }
+.q-container-avatar{
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    background: rgb(116,48,137);
+    background: -moz-linear-gradient(90deg, rgba(116,48,137,0.3393558106836485) 0%, rgba(80,140,181,0.6894958667060574) 84%, rgba(145,81,159,0.39537821964723385) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(116,48,137,0.3393558106836485) 0%, rgba(80,140,181,0.6894958667060574) 84%, rgba(145,81,159,0.39537821964723385) 100%);
+    background: linear-gradient(90deg, rgba(116,48,137,0.3393558106836485) 0%, rgba(127, 80, 181, 0.69) 84%, rgba(145,81,159,0.39537821964723385) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#743089",endColorstr="#91519f",GradientType=1);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+.q-container-about {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    background: rgb(0,0,0);
+    background: -moz-linear-gradient(90deg, rgba(0,0,0,0.12366953617384457) 0%, rgba(84,83,84,0.06484600676207986) 37%, rgba(112,105,105,0.10126057258841037) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(0,0,0,0.12366953617384457) 0%, rgba(84,83,84,0.06484600676207986) 37%, rgba(112,105,105,0.10126057258841037) 100%);
+    background: linear-gradient(90deg, rgba(0,0,0,0.12366953617384457) 0%, rgba(84,83,84,0.06484600676207986) 37%, rgba(112,105,105,0.10126057258841037) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#706969",GradientType=1);
+}
+.q-container-posts {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    background: rgb(0,0,0);
+    background: -moz-linear-gradient(90deg, rgba(236, 230, 230, 0.12) 0%, rgba(219, 211, 219, 0.06) 37%, rgba(112,105,105,0.10126057258841037) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(0,0,0,0.12366953617384457) 0%, rgba(84,83,84,0.06484600676207986) 37%, rgba(112,105,105,0.10126057258841037) 100%);
+    background: linear-gradient(90deg, rgba(206, 197, 197, 0.12) 0%, rgba(201, 195, 201, 0.06) 37%, rgba(208, 205, 205, 0.1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#706969",GradientType=1);
+}
+
+
 
 .q-container img, .q-container-show img {
     border: 2px solid #fff;
@@ -30,6 +90,7 @@ body {
     background: #fff;
     border-radius: .25rem;
 }
+
 .q-title-show {
     text-transform: uppercase;
     font-size: 1.3rem;
@@ -49,12 +110,19 @@ body {
 }
 
 .q-display-response {
-    background: #333D51;
+    background: #353333;
     color: #fff;
 }
-
+.q-display-response:hover {
+    background: #2a2929;
+    color: #fff;
+}
 .answer-link:hover .magic-wand {
   transform: rotate(20deg);
+
+}
+.answer-link{
+    text-decoration: none;
 }
 
 .vote-arrows {
@@ -69,17 +137,12 @@ body {
     color: #444;
 }
 
-.vote-up:hover {
-    color: #3D9970;
-}
-.vote-down:hover {
-    color: #FF4136;
-}
+
 
 .btn-question { 
   color: #FFFFFF; 
-  background-color: #ED7458; 
-  border-color: #D45B3F; 
+  background-color: #743089;
+  border-color: #491f57;
 } 
  
 .btn-question:hover, 
@@ -88,8 +151,8 @@ body {
 .btn-question.active, 
 .open .dropdown-toggle.btn-question { 
   color: #FFFFFF; 
-  background-color: #D45B3F; 
-  border-color: #D45B3F; 
+  background-color: #663376;
+  border-color:  #491f57;
 } 
  
 .btn-question:active, 
@@ -113,15 +176,33 @@ fieldset[disabled] .btn-question:active,
 .btn-question.disabled.active, 
 .btn-question[disabled].active, 
 fieldset[disabled] .btn-question.active { 
-  background-color: #ED7458; 
-  border-color: #D45B3F; 
+  background-color:  #663376;
+  border-color: #491f57;
 } 
  
 .btn-question .badge { 
-  color: #ED7458; 
+  color: #663376;
   background-color: #FFFFFF; 
 }
 
 footer {
     background-color: #efefee;
+}
+#myBtn {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 100px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: rgba(116, 48, 137, 0.74); /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 10px; /* Some padding */
+    border-radius: 50px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+}
+#myBtn:hover{
+    background-color: #743089;
 }

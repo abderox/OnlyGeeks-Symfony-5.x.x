@@ -2,12 +2,15 @@
 
 namespace App\Twig;
 
+use Symfony\Component\String\Inflector\EnglishInflector;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+
+
     public function getFilters(): array
     {
         return [
@@ -22,12 +25,30 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFunction('pluralize', [$this, 'doSomething']),
+            new TwigFunction('pluralize_a', [$this, 'pluralizep']),
+            new TwigFunction('singularize', [$this, 'singularize']),
         ];
     }
 
-    public function doSomething(int $count , string $single , string $plural)
+    public function doSomething(int $count , string $single )
     {
-        $str = $count === 1? $single : $plural;
-        return "$count $str";
+      $infector = new EnglishInflector();
+
+        $str = $count === 1? $single :$infector->pluralize($single)[0];
+        return "$count  $str";
+    }
+    public function pluralizep(int $count , string $single )
+    {
+        $infector = new EnglishInflector();
+
+        $str = $count === 1? $single :$infector->pluralize($single)[0];
+        return "$str";
+    }
+    public function singularize(int $count , string $single )
+    {
+        $infector = new EnglishInflector();
+
+        $str = $count === 1? $single :$infector->singularize($single)[0];
+        return "$str";
     }
 }
