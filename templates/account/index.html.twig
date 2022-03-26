@@ -5,7 +5,10 @@
 {% block stylesheets %}
     {{ parent() }}
 
+    <link href="https://cdn.jsdelivr.net/npm/@icon/entypo@1.0.3/entypo.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('css/account.css') }}">
+    <link rel="stylesheet" href="{{ asset('CSS/timeline.css') }}">
     <style>
         .fa-lock , .fa-globe{
             color: #0c0350;
@@ -63,7 +66,7 @@
                                     </div>
                                     <div class="col-3 text-center">
                                         <a class=" btn-info text-decoration-none follow" href="#" style="margin-bottom: 10px" >
-                                            <h5>{{ user.user.friends | length }}</h5>
+                                            <h5 id="influencers">{{ user.user.friends | length }}</h5>
                                             <h6>{{ pluralize_a(user.user.friends|length  ,'Influencer') }}</h6>
                                         </a>
                                     </div>
@@ -167,6 +170,10 @@
                                         <img src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/30/000000/external-broken-heart-valentines-day-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"/> <span> Other</span>
 
                                     {% endif %}
+                                    <hr>
+                                    <h4 class="font-size-title mt-2">Age</h4>
+                                    <img src="https://img.icons8.com/nolan/36/baby-feet.png"/> <span> {{ user.user.profile.birthday ? user.user.profile.birthday | ago | split('ago')[0] : "Not set" }}</span>
+
                                 </div>
                                 <div class="text-center m-2 font-size-title" title="more info" ><img class="shadow about" id="about2" src="https://img.icons8.com/color/36/000000/circled-chevron-up--v3.png"/></div>
 
@@ -175,91 +182,229 @@
                         </div>
                         {%  endif %}
                     </div>
+                </div>
+                <div class="row">
+                    <div class=" col-12">
+                        <div class="card-header alert-primary">
+                            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-shares" role="tab" aria-selected="true">Shares</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-education-tab" data-toggle="pill" href="#pills-followers" role="tab" aria-selected="false">Fans</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-timeline-tab" data-toggle="pill" href="#pills-followings" role="tab" aria-selected="false">Influencers</a>
+                                </li>
 
-                        {% for helo in helos %}
-                            {%  if helo.ispublished  %}
-                                {% set array={pr:'private',fa:'lock'} %}
-                            {% else %}
-                                {% set array={pr:'public', fa:'globe'} %}
-                            {%  endif %}
-                            {%  if helo.ispublished == 0 or (helo.ispublished==1 and app.user==helo.user) %}
-                    <div class="q-container-posts pb-4 pt-2 col-md-12 show-article-container-border-single">
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
-                                    <div class="q-container-show p-4">
-                                        <div class="row">
-                                            <div class="col-2 text-center">
-                                                <a href="#" class="text-decoration-none"><img src="{{ user.user.profile.image ? asset('uploads/pins/'~user.user.profile.image) : "https://img.icons8.com/color/200/000000/user-male-circle--v2.png"}}" width="100" height="100"></a>
-                                            </div>
-                                            <div class="col-9">
-                                                <h1 class="q-title-show">{{ helo.title }} <i class="fa fa-{{ array.fa }}"></i><span class=" sm"> ({{ array.pr }})</span></h1>
-                                                <div class="q-display p-3">
-                                                    <i class="fa fa-quote-left mr-3"></i>
-                                                    <p class="d-inline">{{ helo.content | raw }}</p>
-                                                    {% if helo.createdAt != helo.updatedAt %}
-                                                        <p class="mt-4 ml-0"><img src="https://img.icons8.com/nolan/20/time-machine.png"/> <small class="text-muted ">  edited <b>{{ helo.updatedAt|ago }}</b></small></p>
-                                                    {% else %}
-                                                        <p class="mt-4 ml-0"><img  src="https://img.icons8.com/nolan/25/time-machine.png"/><small class="text-muted ">{{ helo.createdAt|ago }}</small></p>
-                                                    {% endif %}
-                                                    <div class="row">
-                                                        <div class="col-10">
-                                                            {% if app.user and app.user.name==helo.user.name %}
-                                                                <p class="pt-0"><strong>--You</strong></p>
-                                                            {% else %}
-                                                                <p class="pt-0"><strong>--{{ helo.user.OGusername }} </strong></p>
-                                                            {% endif %}
+                            </ul>
+                        </div>
+
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-shares" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    {% for helo in helos %}
+                                        {%  if helo.ispublished  %}
+                                            {% set array={pr:'private',fa:'lock'} %}
+                                        {% else %}
+                                            {% set array={pr:'public', fa:'globe'} %}
+                                        {%  endif %}
+                                        {%  if helo.ispublished == 0 or (helo.ispublished==1 and app.user==helo.user) %}
+                                            <div class="q-container-posts pb-4 pt-2 col-md-12 show-article-container-border-single">
+                                                <div class="row mt-3">
+                                                    <div class="col-12">
+                                                        <div style="box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);">
+                                                            <div class="q-container-show p-4">
+                                                                <div class="row">
+                                                                    <div class="col-2 text-center">
+                                                                        <a href="#" class="text-decoration-none"><img src="{{ user.user.profile.image ? asset('uploads/pins/'~user.user.profile.image) : "https://img.icons8.com/color/200/000000/user-male-circle--v2.png"}}" width="100" height="100"></a>
+                                                                    </div>
+                                                                    <div class="col-9">
+                                                                        <h1 class="q-title-show">{{ helo.title }} <i class="fa fa-{{ array.fa }}"></i><span class=" sm"> ({{ array.pr }})</span></h1>
+                                                                        <div class="q-display p-3">
+                                                                            <i class="fa fa-quote-left mr-3"></i>
+                                                                            <p class="d-inline">{{ helo.content | raw }}</p>
+                                                                            {% if helo.createdAt != helo.updatedAt %}
+                                                                                <p class="mt-4 ml-0"><img src="https://img.icons8.com/nolan/20/time-machine.png"/> <small class="text-muted ">  edited <b>{{ helo.updatedAt|ago }}</b></small></p>
+                                                                            {% else %}
+                                                                                <p class="mt-4 ml-0"><img  src="https://img.icons8.com/nolan/25/time-machine.png"/><small class="text-muted ">{{ helo.createdAt|ago }}</small></p>
+                                                                            {% endif %}
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    {% if app.user and app.user.name==helo.user.name %}
+                                                                                        <p class="pt-0"><strong>--You</strong></p>
+                                                                                    {% else %}
+                                                                                        <p class="pt-0"><strong>--{{ helo.user.OGusername }} </strong></p>
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                                <div class="  col-2 text-muted" style="font-size: small"> <img class="mb-1" src="https://img.icons8.com/fluency/20/000000/hashtag.png"/> {{ helo.age }}</div>
+                                                                                {% if helo.reference | default %}
+                                                                                    <div class="row mt-2 ml-1">
+                                                                                        <div class="col-12" style="background-color: rgba(196,185,87,0.21)">
+                                                                                            <span> <img style="border: none" src="https://img.icons8.com/cute-clipart/25/000000/info-popup.png"/><small class="text-muted p-0" style="color:#3e24d9 !important; font-weight: bold"> This post contains attachments</small></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                {%  endif %}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-1 ">
+                                                                        <div class="dropdown " >
+                                                                            <a href="#" class="border-0 dropdown-toggle text-decoration-none" style="color:#743089" data-toggle="dropdown"> <img style="border: none" class="mr-0 mt-0 " src=" https://img.icons8.com/glyph-neue/48/ffffff/three-fingers.png"/></a>
+                                                                            <ul class="dropdown-menu mt-3 ">
+                                                                                {% if helo.user==app.user or 'ROLE_ADM' in app.user.roles %}
+                                                                                    <li><a href="{{ path('app_edit',{id:helo.id}) }}" class="nav-link text-secondary"  style="width: 4rem;">Edit</a></li>
+                                                                                    <li><a class="nav-link text-secondary" style="width: 5rem;" onclick="event.preventDefault(); confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit(); " href="{{ path('app_delete',{id:helo.id}) }}">Delete</a>
+                                                                                    </li>
+                                                                                {% else %}
+                                                                                    <li><a href="#" class="nav-link text-secondary"  style="width: 4rem;">Report</a></li>
+                                                                                {%  endif %}
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="  col-2 text-muted" style="font-size: small"> <img class="mb-1" src="https://img.icons8.com/fluency/20/000000/hashtag.png"/> {{ helo.age }}</div>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        {%  if helo.image|default %}
+                                                            <div class="text-center p-2 overflow-hidden rounded shadow mb-4 mt-4 ">
+                                                                <img style="max-width: 500px; max-height: 600px;"  class="rounded w-100 zoom-image" width="200px" id="zoom-image" src="{{helo.image ? asset('uploads/pins/'~helo.image) : asset('uploads/pins/6-610b325d7a28c117415814.jpg') }} " alt="pin picture">
+                                                            </div>
+                                                        {% endif %}
+                                                        <form action="{{ path('app_delete', {'id':  helo.id }) }}" method="post" id="js-pin-delete-form" style="display: none;">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <a class="answer-link text-decoration-none" href="{{path('app_show_pin',{id:helo.id}) }}/#appaned" style="color: #fff;">
+                                                    <p class="q-display-response text-center p-3">
+                                                        <img src="https://img.icons8.com/color/36/000000/comments--v2.png"/> {{ helo.getNoNdeletedPostComments|length }} comments
+                                                    </p>
+                                                </a>
                                             </div>
-                                            <div class="col-1 ">
-                                                <div class="dropdown " >
-                                                    <a href="#" class="border-0 dropdown-toggle text-decoration-none" style="color:#743089" data-toggle="dropdown"> <img style="border: none" class="mr-0 mt-0 " src=" https://img.icons8.com/glyph-neue/48/ffffff/three-fingers.png"/></a>
-                                                    <ul class="dropdown-menu mt-3 ">
-                                                        {% if helo.user==app.user or 'ROLE_ADM' in app.user.roles %}
-                                                            <li><a href="{{ path('app_edit',{id:helo.id}) }}" class="nav-link text-secondary"  style="width: 4rem;">Edit</a></li>
-                                                            <li><a class="nav-link text-secondary" style="width: 5rem;" onclick="event.preventDefault(); confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit(); " href="{{ path('app_delete',{id:helo.id}) }}">Delete</a>
-                                                            </li>
+                                        {%  endif %}
+                                    {% else %}
+                                        <div class="container  pg-container">
+                                            <div class="not-found-res">
+                                                <img  src="https://maxst.icons8.com/vue-static/ouch/404-img.png">
+                                            </div>
+                                            <div class="not-found-text">
+                                                <p style="font-size: 50px" class="visitor">  No shares yet ! </p>
+                                            </div>
+                                        </div>
+                                    {%  endfor %}
+                                    <div class="pagination justify-content-center text-center">
+                                        {{ knp_pagination_render(helos) }}
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-followers" role="tabpanel">
+                                    <div class="row ">
+                                        <div class="timeline-centered col-12">
+                                            <div class="timeline-entry">
+                                                <div class="timeline-entry-inner  ">
+
+                                                    {% for follower in user.user.myfriends %}
+                                                        {%  set followers=follower.user %}
+                                                        <div class="timeline-icon bg-success">
+                                                            <a href="{{ path('app_show_profile',{id:followers.id}) }}" class="text-decoration-none"><img class="rounded-circle shadow" src="{{ followers.profile.image ? asset('uploads/pins/'~followers.profile.image) : "https://img.icons8.com/nolan/48/nerd.png"}}" width="48" height="48"></a>
+                                                        </div>
+
+                                                        <div class="timeline-label ">
+                                                            <h2><a href="{{ path('app_show_profile',{id:followers.id}) }}" class="text-decoration-none">{{ followers.ogusername }}</h2>
+                                                            <div class="d-flex justify-content-between">
+                                                                <p class="mb-1 " style="font-size: 14px">{{ followers.profile.about }}</p>
+{#                                                                <div class=""><button class="btn btn-question ">Follow</button></div>#}
+                                                               <div> {% if followers.AmIfollowing(app.user)  %}
+                                                                    <a class="btn btn-labeled btn-info follows" id="follows" href="{{ path('app_profile_follow',{id:followers.id}) }}" style="background-color: #a79be3 ;color: black; margin-bottom: 10px" >
+                                                                        <span class="btn-label"><img src="https://img.icons8.com/ios/36/ffffff/pet-commands-follow.png"/></span>
+                                                                            <span id="follow_text">Unfollow</span>
+                                                                    </a>
+                                                                {% else %}
+                                                                    <a class="btn btn-labeled btn-info follows" id="follows" href="{{ path('app_profile_follow',{id:followers.id}) }}" style="background-color: #743089 ; margin-bottom: 10px" >
+                                                                        <span class="btn-label"><img src="https://img.icons8.com/ios/36/ffffff/pet-commands-follow.png"/></span>
+                                                                        <span id="follow_text">Follow</span>
+                                                                    </a>
+                                                                {% endif %}
+                                                               </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
                                                         {% else %}
-                                                            <li><a href="#" class="nav-link text-secondary"  style="width: 4rem;">Report</a></li>
-                                                        {%  endif %}
-                                                    </ul>
+                                                            <div class="container pg-container ">
+                                                                <div class="not-found-res">
+                                                                    <img  src="https://maxst.icons8.com/vue-static/ouch/404-img.png">
+                                                                </div>
+                                                                <div class="not-found-text">
+                                                                    <p style="font-size: 50px" class="visitor">  No fans yet ! </p>
+                                                                </div>
+                                                            </div>
+                                                    {% endfor %}
+
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                {%  if helo.image|default %}
-                                    <div class="text-center p-2 overflow-hidden rounded shadow mb-4 mt-4 ">
-                                        <img style="max-width: 500px; max-height: 600px;"  class="rounded w-100 zoom-image" width="200px" id="zoom-image" src="{{helo.image ? asset('uploads/pins/'~helo.image) : asset('uploads/pins/6-610b325d7a28c117415814.jpg') }} " alt="pin picture">
+                                <div class="tab-pane fade" id="pills-followings" role="tabpanel">
+                                    <div class="row ">
+                                        <div class="timeline-centered col-12">
+                                            <div class="timeline-entry">
+                                                <div class="timeline-entry-inner  ">
+
+                                                    {% for following in user.user.friends %}
+                                                        {%  set friends=following.friend %}
+                                                        <div class="block-follow">
+                                                        <div class="timeline-icon bg-success ">
+                                                            <a href="{{ path('app_show_profile',{id:friends.id}) }}" class="text-decoration-none "><img class="rounded-circle shadow" src="{{ friends.profile.image ? asset('uploads/pins/'~friends.profile.image) : "https://img.icons8.com/nolan/48/nerd.png"}}" width="48" height="48"></a>
+                                                        </div>
+
+                                                    <div class="timeline-label ">
+                                                        <h2><a href="{{ path('app_show_profile',{id:friends.id}) }}" class="text-decoration-none">{{ friends.ogusername }}</h2>
+                                                        <div class="d-flex justify-content-between">
+                                                            <p class="mb-1 " style="font-size: 14px">{{ friends.profile.about }}</p>
+                                                            <div class="">{% if friends.AmIfollowing(app.user) %}
+                                                                    <a class="btn btn-labeled btn-info follows " id="follows" href="{{ path('app_profile_follow',{id:friends.id}) }}" style="background-color: #a79be3 ;color: black; margin-bottom: 10px" >
+                                                                        <span class="btn-label"><img src="https://img.icons8.com/ios/36/ffffff/pet-commands-follow.png"/></span>
+                                                                        <span id="follow_text " class="bl">Unfollow</span>
+                                                                    </a>
+                                                                {% else %}
+                                                                    <a class="btn btn-labeled btn-info follows" id="follows" href="{{ path('app_profile_follow',{id:friends.id}) }}" style="background-color: #743089 ; margin-bottom: 10px" >
+                                                                        <span class="btn-label"><img src="https://img.icons8.com/ios/36/ffffff/pet-commands-follow.png"/></span>
+                                                                        <span id="follow_text" class="bl">Follow</span>
+                                                                    </a>
+                                                                {% endif %}</div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                        <hr>
+                                                    {% else %}
+                                                        <div class="container pg-container ">
+                                                            <div class="not-found-res">
+                                                                <img  src="https://maxst.icons8.com/vue-static/ouch/404-img.png">
+                                                            </div>
+                                                            <div class="not-found-text">
+                                                                <p style="font-size: 50px" class="visitor">  No influencers yet ! </p>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                {% endif %}
-                                <form action="{{ path('app_delete', {'id':  helo.id }) }}" method="post" id="js-pin-delete-form" style="display: none;">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                </form>
-                            </div>
-                        </div>
-                            <a class="answer-link text-decoration-none" href="{{path('app_show_pin',{id:helo.id}) }}/#appaned" style="color: #fff;">
-                                <p class="q-display-response text-center p-3">
-                                    <img src="https://img.icons8.com/color/36/000000/comments--v2.png"/> {{ helo.getNoNdeletedPostComments|length }} comments
-                                </p>
-                            </a>
+                                </div>
                     </div>
-                            {%  endif %}
-                        {%  endfor %}
 
 
-                </div>
-                <div class="pagination justify-content-center text-center">
-                    {{ knp_pagination_render(helos) }}
-                </div>
+
+
+{#                <div class="pagination justify-content-center text-center">#}
+{#                    {{ knp_pagination_render(helos) }}#}
+{#                </div>#}
             </div>
         </div>
     </div>
@@ -269,6 +414,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -287,7 +433,7 @@
                        if(result.friendship)
                        {
                            $('#fans').html(fans_to_int+1);
-                           $('#follow_text').html('Following');
+                           $('#follow_text').html('Unfollow');
                            $('#follow').css("background-color", "#a79be3");
                            $('#follow').css("color", "black");
                        }
@@ -301,6 +447,54 @@
                     }
                 });
             });
+            function following()
+            {
+                event.preventDefault();
+                var fans=$('#fans').text();
+                var influencers=$('#influencers').text();
+                var fans_to_int=parseInt(fans);
+                var influencers_to_int=parseInt(influencers);
+                var this_is = $(this).children('span#follow_text');
+                var this_up = $(this).children('span.bl');
+                var this_one = this_is.parent();
+                console.log(this_is.parents().eq(4));
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr('href'),
+                        data: {  },
+                        dataType: "json",
+                        success: function(result){
+                            console.log(result)
+                            if(result.friendship)
+                            {
+                                {% if user.user == app.user %}
+                                $('#influencers').html(influencers_to_int+1);
+                                {% endif %}
+                                this_is.html('Unfollow');
+                                this_one.css("background-color", "#a79be3");
+                                this_one.css("color", "black");
+                                console.log(this_is);
+                            }
+                            else
+                            {
+                                this_is.html('Follow');
+                                this_one.css("background-color", "#743089FF");
+                                this_one.css("color", "white");
+                                {% if user.user == app.user %}
+                                $('#influencers').html(influencers_to_int-1);
+                                this_up.parents().eq(4).hide(500);
+                                {% endif %}
+
+                            }
+
+                        }
+
+
+                    });
+            }
+            document.querySelectorAll('a.follows').forEach(function (link){
+                link.addEventListener('click', following);
+            })
             $("#about").click(function(){
                 $('#about').hide(500);
                 $('#about2').show(500);

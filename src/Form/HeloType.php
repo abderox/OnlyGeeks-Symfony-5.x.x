@@ -29,9 +29,11 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 class HeloType extends AbstractType
 {
     private static $title = [
-       'names',
-        'star',
-        'interstellar_space'
+       'Movie',
+        'Book',
+        'Picture',
+        'Question',
+        'Other'
     ];
  public function __construct(UserRepository $userrepo , EntityManagerInterface $em)
  {
@@ -50,7 +52,7 @@ class HeloType extends AbstractType
 
             'choices' =>
                 array_combine(self::$title,self::$title),
-            'placeholder'=>"--choose a service--",
+            'placeholder'=>"--Categories?--",
             'label'=>' ',
 
 
@@ -96,13 +98,13 @@ class HeloType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
                 /** @var Helo|null $data */
-                $data = $event->getData()??'star';
+                $data = $event->getData()??'Question';
                 if (!$data) {
                     return;
                 }
                 $this->setupSpecificLocationNameField(
                     $event->getForm(),
-                    $data->getService()??'star');
+                    $data->getService()??'Question');
             }
 
 
@@ -143,7 +145,7 @@ class HeloType extends AbstractType
         }
 
         $form->add('noma', ChoiceType::class, [
-            'placeholder' => 'Luxury cars , Palace , Trips ? ',
+            'placeholder' => 'Type',
             'choices' => $choices,
             'label'=>' ',
             'required' => false,
@@ -174,27 +176,59 @@ class HeloType extends AbstractType
     {
 //        $repoNeighborhood = $this->em->getRepository('App:User');
 //
-//        $planets = $repoNeighborhood->createQueryBuilder("q")
+//        $movie = $repoNeighborhood->createQueryBuilder("q")
 //            ->select('q.name')
 //            ->getQuery()
 //            ->getResult();7
-        $query = $this->em->createQuery('SELECT u.name FROM App\Entity\User u order by u.name ASC  ');
-        $planets =   array_filter(array_column($query->getResult(),'name'),'strlen');
+//        $query = $this->em->createQuery('SELECT u.name FROM App\Entity\User u order by u.name ASC  ');
+//        $movie =   array_filter(array_column($query->getResult(),'name'),'strlen');
 
-
-        $stars = [
-            'Polaris',
-            'Sirius',
-            'Alpha Centauari A',
-            'Alpha Centauari B',
-            'Betelgeuse',
-            'Rigel',
+        $movie = [
+            'Action',
+            'Comedy',
+            'Drama',
+            'Fantasy',
+            'Horror',
+            'Mystery',
+            'Romance',
+            'Thriller'
+        ];
+        $book = [
+            'Action ',
+            'Adventure',
+            'Classics',
+            'Comic Book',
+            'Detective',
+            'Fantasy',
+            'Historical Fiction',
+            'Horror'
+        ];
+        $pic = [
+            'Paint ',
+            'Portrait',
+            'Adventure',
+            'Astrophotography',
+            'Black & White',
+            'Commercial',
+            'Educational',
+            'Other'
+        ];
+        $question = [
+            'Open',
+            'Science',
+            'geek',
+            'Computer science',
+            'literature',
+            'Poetry',
+            'Psychology',
             'Other'
         ];
         $locationNameChoices = [
-            'names' => array_combine($planets, $planets),
-            'star' => array_combine($stars, $stars),
-            'interstellar_space' => null,
+            'Movie' => array_combine($movie, $movie),
+            'Book' => array_combine($book, $book),
+            'Picture' => array_combine($pic, $pic),
+            'Question' => array_combine($question, $question),
+            'Other' => null,
         ];
         return $locationNameChoices[$service];
     }

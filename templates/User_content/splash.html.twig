@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="{{ asset('/CSS/splashStyle.css') }}">
+
+</head>
+<body>
+
+
+<section class="wrapper">
+
+    <div class="container">
+
+        <div id="scene" class="scene" data-hover-only="false">
+
+
+            <div class="circle" data-depth="1.2"></div>
+
+            <div class="one" data-depth="0.9">
+                <div class="content">
+                    <span class="piece"></span>
+                    <span class="piece"></span>
+                    <span class="piece"></span>
+                </div>
+            </div>
+
+            <div class="two" data-depth="0.60">
+                <div class="content">
+                    <span class="piece"></span>
+                    <span class="piece"></span>
+                    <span class="piece"></span>
+                </div>
+            </div>
+
+            <div class="three" data-depth="0.40">
+                <div class="content">
+                    <span class="piece"></span>
+                    <span class="piece"></span>
+                    <span class="piece"></span>
+                </div>
+            </div>
+
+            <p class="p404" data-depth="0.50">OnlyGeeks</p>
+            <p class="p404" data-depth="0.10">OnlyGeeks</p>
+
+        </div>
+
+        <div class="text">
+            <article>
+                <p>Welcome to OnlyGeeks <br> Honored to have someone like you here ! geeky 🤩</p>
+                <button onclick="goto()">START</button>
+            </article>
+        </div>
+
+    </div>
+</section>
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script >
+    var scene = document.getElementById('scene');
+    var parallax = new Parallax(scene);
+    var goto ;
+    goto = ()=>{
+        window.location="{{ path('app_login') }}";
+    };
+</script>
+</body>
+</html>

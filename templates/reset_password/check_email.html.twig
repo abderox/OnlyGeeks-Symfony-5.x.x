@@ -3,7 +3,7 @@
 {% block title %}Password Reset Email Sent{% endblock %}
 
 {% block body %}
-    <div class="container mt-5 " style="font-size: large">
+    <div class="container mt-5 pg-c " style="font-size: large">
     <p class="text-center font-weight-bold">
         If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
         This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.

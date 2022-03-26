@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+
+{% endblock %}
+
+{% block body %}
+<div class="container pg-c">
+    <div class="row">
+        <div class="col-md-12">
+    {{ form_start(resetForm, {
+        'attr': {'class': 'form-signin'}
+    }) }}
+    <h1 class="h3 mb-3 font-weight-normal text-center">Update your password<img src="https://img.icons8.com/ios/60/000000/customer-insight--v2.png"/></h1>
+        {{ form_row(resetForm.oldPassword) }}
+        {{ form_row(resetForm.plainPassword) }}
+        <button class="btn btn-primary btn-block" style="background-color: #743089">Update</button>
+    {{ form_end(resetForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

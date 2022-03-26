@@ -314,7 +314,7 @@ class Helo
     {
         return $this->postComments;
     }
-    /* use criteria for looping instead of using the traditionnal way ! for loops*/
+    /* use criteria for looping instead of using the traditionnal way ! for loops : like that we ll query with sql only once and do operations after*/
     /**
      * @return Collection|PostComment[]
      */

@@ -68,7 +68,7 @@
             </div>
             <div class="row mt-5 pt-4 show-article-container-border-green ">
                 <div class="col-12">
-                    <a href="#" class="btn btn-labeled btn-info" >Update password</a>
+                    <a href="{{ path('app_update_pass') }}" class="btn btn-labeled btn-info" >Update password</a>
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-md-8 col-sm-12 col-xs-12">
                     {{ form_start(maform, {
-                        'attr': {'class': 'form-signi'}
+                        'attr': {'class': 'form-signi',novalidate:'novalidate'}
                     }) }}
                     <h1 class="h3 mb-3 font-weight-normal text-center">My profile
                         {% if app.user.gender==0 %}
@@ -113,6 +113,7 @@
                 {{ form_row(maform.gender) }}
 
                 {{ form_row(maform.profile.relationship) }}
+                {{ form_row(maform.profile.birthday) }}
 
                 {{ form_row(maform.profile.privateInfo) }}
 
@@ -137,4 +138,9 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
+ <script>
+     $(document).ready(function(){
+         $('.js-datepicker');
+     })
+ </script>
 {% endblock  %}

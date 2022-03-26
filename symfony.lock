@@ -157,6 +157,12 @@
     "laminas/laminas-code": {
         "version": "4.4.2"
     },
+    "lcobucci/clock": {
+        "version": "2.1.0"
+    },
+    "lcobucci/jwt": {
+        "version": "4.0.4"
+    },
     "league/flysystem": {
         "version": "2.2.3"
     },
@@ -215,14 +221,20 @@
     "psr/http-client": {
         "version": "1.0.1"
     },
+    "psr/http-factory": {
+        "version": "1.0.1"
+    },
     "psr/http-message": {
         "version": "1.0.1"
+    },
+    "psr/link": {
+        "version": "1.1.1"
     },
     "psr/log": {
         "version": "1.1.4"
     },
     "psy/psysh": {
-        "version": "v0.10.8"
+        "version": "v0.10.9"
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
@@ -333,7 +345,7 @@
         "version": "v2.4.0"
     },
     "symfony/expression-language": {
-        "version": "v5.3.4"
+        "version": "v5.3.7"
     },
     "symfony/filesystem": {
         "version": "v5.3.3"
@@ -374,6 +386,15 @@
             "./src/Controller/.gitignore",
             "./src/Kernel.php"
         ]
+    },
+    "symfony/google-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
     },
     "symfony/http-client": {
         "version": "v5.3.3"
@@ -419,6 +440,21 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/mercure": {
+        "version": "v0.6.0"
+    },
+    "symfony/mercure-bundle": {
+        "version": "0.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "0.3",
+            "ref": "e0a854b5439186e04b28fb8887b42c54f24a0d32"
+        },
+        "files": [
+            "./config/packages/mercure.yaml"
+        ]
     },
     "symfony/messenger": {
         "version": "4.3",
@@ -506,6 +542,15 @@
     },
     "symfony/redis-messenger": {
         "version": "v5.3.4"
+    },
+    "symfony/requirements-checker": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "02c6e4b9b117c39e8a23eab7f3840ef6e62293b9"
+        }
     },
     "symfony/routing": {
         "version": "5.3",
@@ -630,6 +675,9 @@
     "symfony/var-exporter": {
         "version": "v5.3.3"
     },
+    "symfony/web-link": {
+        "version": "v5.3.4"
+    },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
         "recipe": {
@@ -683,9 +731,6 @@
     },
     "symfonycasts/verify-email-bundle": {
         "version": "v1.5.0"
-    },
-    "theofidry/psysh-bundle": {
-        "version": "4.4.0"
     },
     "twig/extra-bundle": {
         "version": "v3.3.1"

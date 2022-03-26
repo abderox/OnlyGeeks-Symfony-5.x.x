@@ -1,5 +1,6 @@
 {
     "devDependencies": {
+        "@babel/preset-react": "7.0.0",
         "@symfony/stimulus-bridge": "^2.0.0",
         "@symfony/webpack-encore": "^1.0.0",
         "core-js": "^3.0.0",
@@ -16,6 +17,13 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "jQuery": "^1.7.4"
+        "@babel/preset-react": "^7.10.4",
+        "prop-types": "^15.7.2",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-redux": "^7.2.1",
+        "react-router-dom": "^5.2.0",
+        "redux": "^4.0.5",
+        "redux-thunk": "^2.3.0"
     }
 }

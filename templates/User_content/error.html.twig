@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h3><a href="{{ path('app_show') }}"> Go back </a></h3>
+
+
+
+            <div>
+                <p>
+                    {{ error.message }}
+
+                <div>
+                    <p>
+
+                        <strong> {{ error.statusCode }}</strong>
+                    </p>
+                </div>
+
+                </p>
+
+            </div>
+
+
+
+{% endblock body %}

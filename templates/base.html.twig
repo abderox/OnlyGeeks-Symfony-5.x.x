@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spartan&display=swap">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css">
         <link rel="stylesheet" href="{{ asset('css/font-awesome.css') }}">
         <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -181,6 +181,34 @@
             #more-tags{
                 display: none;
             }
+            .not-found{
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                margin-top: 25%;
+
+
+            }
+            .not-found-res{
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                margin: 20%;
+
+            }
+            .pg-container{
+                height: 55% !important;
+            }
+            .not-found-text{
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                margin-top: 20px;
+
+            }
+            .pg-c{
+                height: 85%;
+            }
 
 
 
@@ -204,7 +232,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a style="color: #fff;" class="nav-link" href="{{ path('app_show') }}"> News Feed</a>
+                <a style="color: #fff;" class="nav-link" href="{{ path('app_show') }}"> ALL</a>
             </li>
             <li class="nav-item">
                 <a style="color: #fff;" class="nav-link" href="#">Gallery</a>
@@ -212,9 +240,7 @@
             <li class="nav-item">
                 <a style="color: #fff;" class="nav-link" href="#">Books</a>
             </li>
-            <li class="nav-item">
-                <a style="color: #fff;" class="nav-link" href="#">Postures</a>
-            </li>
+
         </ul>
 {#        <form class="form-inline my-2 my-lg-0">#}
 {#            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
@@ -274,7 +300,7 @@
 
 <footer class="footer">
     <div class="container text-center">
-        <span class=" footer-text">All rights are registered &copy; 2021 <a href="https://knpuniversity.com" class="text-footer-1"><img class="navbar-brand" src="{{ asset('images/logo.png') }}" height="60px"></a></span>
+        <span class=" footer-text">All rights are registered &copy; 2021 <a href="{{ path('app_show') }}" class="text-footer-1"><img class="navbar-brand" src="{{ asset('images/logo.png') }}" height="60px"></a></span>
 
     </div>
 </footer>
@@ -285,6 +311,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
     <script src="{{ asset('js/zoom.js') }}"></script>
     <script src="{{ asset('js/tags-input.js') }}"></script>
     <script>

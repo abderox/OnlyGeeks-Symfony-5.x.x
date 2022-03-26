@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Profile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Validator\Constraints;
 
 class ProfileType extends AbstractType
 {
@@ -41,6 +44,27 @@ class ProfileType extends AbstractType
                 'label'=>'Avatar',
 
 
+
+            ])
+            ->add('birthday', DateType::class, [
+                'widget' => 'single_text',
+                'label'=>'Date of birth',
+                'attr' => ['class' => 'js-datepicker'],
+                'constraints' => [
+                    new Constraints\Callback(function($object, ExecutionContextInterface $context) {
+                        $start = new \DateTime('now');
+                        $stop = $object;
+
+
+                            if ($start->format('Y') - $stop->format('Y') <14 ) {
+
+                                $context
+                                    ->buildViolation('Not a valid date of birth ')
+                                    ->addViolation();
+                            }
+
+                    }),
+                    ]
 
             ])
 
